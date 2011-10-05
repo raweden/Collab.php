@@ -16,7 +16,7 @@
  * @package Amfphp_Core
  * @author Ariel Sommeria-Klein
  */
-class Amfphp_Core_HttpRequestGatewayFactory {
+class Amfphp_Core_HttpRequestGatewayFactory{
 
 
 
