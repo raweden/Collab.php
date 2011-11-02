@@ -1,4 +1,5 @@
-#amfphp
+#Core RPC 
+**a modifaction of amfphp 2.0**
 
 **What is amfphp?**
 
@@ -8,9 +9,9 @@ How does it work?
 **amfphp** works as an entry point for your client. Your client sends a request to a PHP script on your server where amfphp is loaded. It parses the request, loads the requested service, calls it, and returns the answer accordingly. amfphp is maintained by Silex Labs and this is a fork by **raweden** to develop a uniform bundle to support **rpc** requests from a wide range of languages and platform.
 
 ### Goals for this fork!
-* Add **XML-RPC** plugin to support a wide range of client-side languages.
+* Add **XML-RPC** plugin to support another wide range of client-side languages.
 * Remove the naming convention used by the **silexlabs**, in favor of classname without the `Amfphp` and `package` prefixes.
-* Posible add support for sub-directories both in the `Plugins` and `Service` folder.
+* Posible add support for sub-directories both in the `Plugins` and `Service` folder, or support for multible plugin folders.
 * Clean up the layout of the default Service browser plugin. (Done but not synced yet)
 
 ### Related Links
@@ -23,3 +24,26 @@ How does it work?
 [Silex Labs](http://www.silexlabs.org/)
 
 **Disclaimer** most of above documentation is written by [silexlabs](http://silexlabs.org/amfphp/) with a touch of **raweden**.
+
+### License
+**Copyright (c) 2009-2011, Silex Labs**
+All rights reserved.  
+[New BSD license](See http://en.wikipedia.org/wiki/Bsd_license)
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met: 
+ 
+* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.  
+* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.  
+* Neither the name of Silex Labs nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+**THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL SILEX LABS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.**
