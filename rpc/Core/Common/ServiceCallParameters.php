@@ -18,7 +18,7 @@
  * 
  * TODO: Give This class a more uniform name.
  */
-class Amfphp_Core_Common_ServiceCallParameters {
+class ServiceCallParameters {
 
 
     /**

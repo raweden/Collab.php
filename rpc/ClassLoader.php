@@ -54,6 +54,4 @@ require_once Amfphp_ROOTPATH . "Core/FilterManager.php";
 require_once Amfphp_ROOTPATH . "Core/HttpRequestGatewayFactory.php";
 require_once Amfphp_ROOTPATH . "Core/PluginManager.php";
 
-
-
 ?>

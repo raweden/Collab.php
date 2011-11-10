@@ -11,12 +11,12 @@
 
 /**
  * Used to generate a Flex Acknowledge message.
- * part of the AmfphpFlexMessaging plugin
+ * part of the FlexMessaging plugin
  *
  * @package Amfphp_Plugins_FlexMessaging
  * @author Ariel Sommeria-Klein
  */
-class AmfphpFlexMessaging_AcknowledgeMessage
+class FlexMessaging_AcknowledgeMessage
 {
 	public $_explicitType;
 	public $correlationId;
@@ -31,7 +31,7 @@ class AmfphpFlexMessaging_AcknowledgeMessage
 	public function  __construct($correlationId)
 	{
             $explicitTypeField = Amfphp_Core_Amf_Constants::FIELD_EXPLICIT_TYPE;
-            $this->$explicitTypeField = AmfphpFlexMessaging::FLEX_TYPE_ACKNOWLEDGE_MESSAGE;
+            $this->$explicitTypeField = FlexMessaging::FLEX_TYPE_ACKNOWLEDGE_MESSAGE;
 	    $this->correlationId = $correlationId;
 	    $this->messageId = $this->generateRandomId();
 	    $this->clientId = $this->generateRandomId();

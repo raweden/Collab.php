@@ -75,12 +75,12 @@ class Amfphp_Core_Amf_Handler implements IDeserializer, IDeserializedRequestHand
      * creates a ServiceCallParamaeters object from an Amfphp_Core_Amf_Message
      * supported separators in the targetUri are "/" and "."
      * @param Amfphp_Core_Amf_Message $Amfphp_Core_Amf_Message
-     * @return Amfphp_Core_Common_ServiceCallParameters
+     * @return ServiceCallParameters
      */
     private function getServiceCallParameters(Amfphp_Core_Amf_Message $Amfphp_Core_Amf_Message){
         $targetUri = str_replace(".", "/", $Amfphp_Core_Amf_Message->targetUri);
         $split = explode("/", $targetUri);
-        $ret = new Amfphp_Core_Common_ServiceCallParameters();
+        $ret = new ServiceCallParameters();
         $ret->methodName = array_pop($split);
         $ret->serviceName = join($split, "/");
         $ret->methodParameters = $Amfphp_Core_Amf_Message->data;

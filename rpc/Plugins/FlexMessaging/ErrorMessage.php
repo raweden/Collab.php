@@ -11,7 +11,7 @@
 
 /**
  * Used to generate a Flex Error message.
- * part of the AmfphpFlexMessaging plugin
+ * part of the FlexMessaging plugin
  *
  * @package Amfphp_Plugins_FlexMessaging
  * @author Ariel Sommeria-Klein
@@ -19,18 +19,17 @@
 
 
 
-class AmfphpFlexMessaging_ErrorMessage
+class FlexMessaging_ErrorMessage
 {
 	public $_explicitType;
 	public $correlationId;
 	public $faultCode;
 	public $faultDetail;
 	public $faultString;
-        public $rootCause;
 
         public function  __construct($correlationId) {
             $explicitTypeField = Amfphp_Core_Amf_Constants::FIELD_EXPLICIT_TYPE;
-            $this->$explicitTypeField = AmfphpFlexMessaging::FLEX_TYPE_ERROR_MESSAGE;
+            $this->$explicitTypeField = FlexMessaging::FLEX_TYPE_ERROR_MESSAGE;
 	    $this->correlationId = $correlationId;
         }
 }
