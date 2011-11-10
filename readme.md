@@ -14,6 +14,10 @@ How does it work?
 * Posible add support for sub-directories both in the `Plugins` and `Service` folder, or support for multible plugin folders.
 * Clean up the layout of the default Service browser plugin. (Done but not synced yet)
 
+### Service Browser
+
+![Preview](http://raweden.se/public/wiki/ServiceBrowser.png)
+
 ### Related Links
 
 
