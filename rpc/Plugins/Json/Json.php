@@ -17,27 +17,22 @@
  * @package Amfphp_Plugins_Json
  * @author Yannick DOMINGUEZ
  */
-class AmfphpJson implements Amfphp_Core_Common_IDeserializer, Amfphp_Core_Common_IDeserializedRequestHandler, Amfphp_Core_Common_IExceptionHandler, Amfphp_Core_Common_ISerializer {
+class Json implements IDeserializer, IDeserializedRequestHandler, IExceptionHandler, ISerializer {
 
     /**
     * the content-type string indicating a JSON content
     */
     const JSON_CONTENT_TYPE = "application/json";
-    
-    private $returnErrorDetails = false;
 	
     /**
      * constructor. Add filters on the HookManager.
      * @param array $config optional key/value pairs in an associative array. Used to override default configuration values.
      */
     public function  __construct(array $config = null) {
-        $filterManager = Amfphp_Core_FilterManager::getInstance();
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_DESERIALIZER, $this, "filterHandler");
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_DESERIALIZED_REQUEST_HANDLER, $this, "filterHandler");
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_EXCEPTION_HANDLER, $this, "filterHandler");
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_SERIALIZER, $this, "filterHandler");
-        $this->returnErrorDetails = (isset ($config[Amfphp_Core_Config::CONFIG_RETURN_ERROR_DETAILS]) && $config[Amfphp_Core_Config::CONFIG_RETURN_ERROR_DETAILS]);
-        
+        $filterManager = FilterManager::getInstance();
+        $filterManager->addFilter(Gateway::FILTER_DESERIALIZER, $this, "filterHandler");
+        $filterManager->addFilter(Gateway::FILTER_EXCEPTION_HANDLER, $this, "filterHandler");
+        $filterManager->addFilter(Gateway::FILTER_SERIALIZER, $this, "filterHandler");
     }
 
     /**
@@ -47,27 +42,25 @@ class AmfphpJson implements Amfphp_Core_Common_IDeserializer, Amfphp_Core_Common
      * @return this or null
      */
     public function filterHandler($handler, $contentType){
-        if(strpos($contentType, self::JSON_CONTENT_TYPE) !== false){
+        if(strpos($contentType, self::JSON_CONTENT_TYPE) !== false)
             return $this;
-        }
+		return $handler;
     }
 
+    /**
+     * @see IDeserializer
+     */
     public function deserialize(array $getData, array $postData, $rawPostData){
-        if($rawPostData != ""){
-            return json_decode($rawPostData);
-        }else{
-            throw new Exception("json call data not found. It must be sent in the post data");
-        }
+		return json_decode($rawPostData);
     }
-
 
     /**
      * Retrieve the serviceName, methodName and parameters from the PHP object
      * representing the JSON string
-     * @see Amfphp_Core_Common_IDeserializedRequestHandler
+     * @see IDeserializedRequestHandler
      * @return the service call response
      */
-    public function handleDeserializedRequest($deserializedRequest, Amfphp_Core_Common_ServiceRouter $serviceRouter){
+    public function handleDeserializedRequest($deserializedRequest, ServiceRouter $serviceRouter){
 		
 		if(isset ($deserializedRequest->serviceName)){
             $serviceName = $deserializedRequest->serviceName;
@@ -88,24 +81,16 @@ class AmfphpJson implements Amfphp_Core_Common_IDeserializer, Amfphp_Core_Common
     }
 
     /**
-     * @see Amfphp_Core_Common_IExceptionHandler
+     * @see IExceptionHandler
      */
-    public function handleException(Exception $exception){        
-        $error = new stdClass();
-        $error->message = $exception->getMessage();
-        $error->code = $exception->getCode();
-        if($this->returnErrorDetails){
-            $error->file = $exception->getFile();
-            $error->line = $exception->getLine();
-            $error->stack = $exception->getTraceAsString();
-        }        
-        return (object)array('error' => $error);
+    public function handleException(Exception $exception){
+        return str_replace("\n", "<br>", $exception->__toString());
         
     }
     
     /**
      * Encode the PHP object returned from the service call into a JSON string
-     * @see Amfphp_Core_Common_ISerializer
+     * @see ISerializer
      * @return the encoded JSON string sent to JavaScript
      */
     public function serialize($data){

@@ -11,14 +11,14 @@
 
 /** 
  * Authentication for Amfphp.
- * On a service object, the plugin looks for a method called _getMethodRoles. If the method exists, the plugin will look for a role in the session that matches the role.
+ * On a service object, the plugin looks for a method called getMethodRoles. If the method exists, the plugin will look for a role in the session that matches the role.
  * If the roles don't match, an Exception is thrown.
- * The _getMethodRoles takes a parameter $methodName, and must return an array of strings containing acceptable roles for the method. If the return value is null,
+ * The getMethodRoles takes a parameter $methodName, and must return an array of strings containing acceptable roles for the method. If the return value is null,
  * it is considered that that particular method is not protected.
  * 
  * For example:
  * <code>
- * public function _getMethodRoles($methodName){
+ * public function getMethodRoles($methodName){
  *    if($methodName == "adminMethod"){
  *        return array("admin");
  *    }else{
@@ -32,14 +32,14 @@
  * explicitly, or by setting a header with the name "Credentials", containing {userid: userid, password: password}, as defined by the AS2
  * NetConnection.setCredentials method. It is considered good practise to have a "logout" method, though this is optional
  * The login method returns a role in a "string". It takes 2 parameters, the user id and the password.
- * The logout method should call AmfphpAuthentication::clearSessionInfo();
+ * The logout method should call Authentication::clearSessionInfo();
  * 
  * See the AuthenticationService class in the test data for an example of an implementation.
  *
  * @package Amfphp_Plugins_Authentication
  * @author Ariel Sommeria-klein
  */
-class AmfphpAuthentication {
+class Authentication{
     /**
      * the field in the session where the roles array is stored
      */
@@ -48,7 +48,7 @@ class AmfphpAuthentication {
     /**
      * the name of the method on the service where the method roles are given
      */
-    const METHOD_GET_METHOD_ROLES = "_getMethodRoles";
+    const METHOD_GET_METHOD_ROLES = "getMethodRoles";
 
     /**
      * the name of the login method
@@ -72,8 +72,8 @@ class AmfphpAuthentication {
      * @param array $config optional key/value pairs in an associative array. Used to override default configuration values.
      */
     public function  __construct(array $config = null) {
-        $filterManager = Amfphp_Core_FilterManager::getInstance();
-        $filterManager->addFilter(Amfphp_Core_Common_ServiceRouter::FILTER_SERVICE_OBJECT, $this, "filterServiceObject");
+        $filterManager = FilterManager::getInstance();
+        $filterManager->addFilter(ServiceRouter::FILTER_SERVICE_OBJECT, $this, "filterServiceObject");
         $filterManager->addFilter(Amfphp_Core_Amf_Handler::FILTER_AMF_REQUEST_HEADER_HANDLER, $this, "filterAmfRequestHeaderHandler");
         $this->headerUserId = null;
         $this->headerPassword = null;
@@ -81,14 +81,13 @@ class AmfphpAuthentication {
 
     /**
      * @param Object $handler
-     * @param Amfphp_Core_Amf_Header $header the request header
-     * @return AmfphpAuthentication 
+     * @param AMFHeader $header the request header
+     * @return Authentication 
      */
-    public function filterAmfRequestHeaderHandler($handler, Amfphp_Core_Amf_Header $header){
+    public function filterAmfRequestHeaderHandler($handler, AMFHeader $header){
         if($header->name == Amfphp_Core_Amf_Constants::CREDENTIALS_HEADER_NAME){
             return $this;
         }
-
     }
 
 
@@ -106,12 +105,8 @@ class AmfphpAuthentication {
         if(!method_exists($serviceObject, self::METHOD_GET_METHOD_ROLES)){
             return;
         }
-        
-        if($methodName == self::METHOD_GET_METHOD_ROLES){
-            throw new Exception("_getMethodRoles method access forbidden");
-        }
 
-        //the service object has a "_getMethodRoles" method. role checking is necessary if the returned value is not null
+        //the service object has a "getMethodRoles" method. role checking is necessary if the returned value is not null
         $acceptedRoles = call_user_func(array($serviceObject, self::METHOD_GET_METHOD_ROLES), $methodName);
         if(!$acceptedRoles){
             return;
@@ -196,10 +191,10 @@ class AmfphpAuthentication {
 
     /**
      * looks for a "Credentials" request header. If there is one, uses it to try to authentify the user.
-     * @param Amfphp_Core_Amf_Header $header the request header
+     * @param AMFHeader $header the request header
      * @return void
      */
-    public function handleRequestHeader(Amfphp_Core_Amf_Header $header){
+    public function handleRequestHeader(AMFHeader $header){
         if($header->name != Amfphp_Core_Amf_Constants::CREDENTIALS_HEADER_NAME){
             throw new Amfphp_Core_Exception("not an authentication amf header. type: " . $header->name);
         }

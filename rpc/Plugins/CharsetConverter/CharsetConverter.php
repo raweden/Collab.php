@@ -16,7 +16,7 @@
  * @package Amfphp_Plugins_CharsetConverter
  * @author Ariel Sommeria-Klein
  */
-class AmfphpCharsetConverter {
+class CharsetConverter{
     /**
      * don't do anything
      */
@@ -105,9 +105,9 @@ class AmfphpCharsetConverter {
         if($this->clientCharset == $this->phpCharset){
             return;
         }
-        $filterManager = Amfphp_Core_FilterManager::getInstance();
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_DESERIALIZED_REQUEST, $this, "filterDeserializedRequest");
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_DESERIALIZED_RESPONSE, $this, "filterDeserializedResponse");
+        $filterManager = FilterManager::getInstance();
+        $filterManager->addFilter(Gateway::FILTER_DESERIALIZED_REQUEST, $this, "filterDeserializedRequest");
+        $filterManager->addFilter(Gateway::FILTER_DESERIALIZED_RESPONSE, $this, "filterDeserializedResponse");
     }
 
 

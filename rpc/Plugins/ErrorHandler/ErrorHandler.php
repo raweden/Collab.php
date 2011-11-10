@@ -18,7 +18,7 @@
  * @author Ariel Sommeria-Klein
  */
 
-class AmfphpErrorHandler {
+class ErrorHandler{
      /**
      * constructor. Add filters on the HookManager.
      * @param array $config optional key/value pairs in an associative array. Used to override default configuration values.

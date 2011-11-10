@@ -20,7 +20,7 @@
  * @package Amfphp_Plugins_CustomClassConverter
  * @author Ariel Sommeria-Klein
  */
-class AmfphpCustomClassConverter {
+class CustomClassConverter {
 
      /**
      * paths to folders containing custom classes(relative or absolute)
@@ -40,9 +40,9 @@ class AmfphpCustomClassConverter {
                 $this->customClassFolderPaths = $config["customClassFolderPaths"];
             }
         }
-        $filterManager = Amfphp_Core_FilterManager::getInstance();
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_DESERIALIZED_REQUEST, $this, "filterDeserializedRequest");
-        $filterManager->addFilter(Amfphp_Core_Gateway::FILTER_DESERIALIZED_RESPONSE, $this, "filterDeserializedResponse");
+        $filterManager = FilterManager::getInstance();
+        $filterManager->addFilter(Gateway::FILTER_DESERIALIZED_REQUEST, $this, "filterDeserializedRequest");
+        $filterManager->addFilter(Gateway::FILTER_DESERIALIZED_RESPONSE, $this, "filterDeserializedResponse");
     }
 
 
