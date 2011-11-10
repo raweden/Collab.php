@@ -15,6 +15,8 @@
  * 
  * @package Amfphp_Core_Amf_Types
  * @author Danny Kopping
+ * 
+ * TODO: Give This class a more uniform name (Date)
  */
 class Amfphp_Core_Amf_Types_Date
 {

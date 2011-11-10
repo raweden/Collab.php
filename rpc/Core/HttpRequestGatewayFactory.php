@@ -16,7 +16,7 @@
  * @package Amfphp_Core
  * @author Ariel Sommeria-Klein
  */
-class Amfphp_Core_HttpRequestGatewayFactory{
+class HttpRequestGatewayFactory{
 
 
 
@@ -39,7 +39,7 @@ class Amfphp_Core_HttpRequestGatewayFactory{
      * create the gateway.
      * content type is recovered by looking at the GET parameter contentType. If it isn't set, it looks in the content headers.
      * @param Amfphp_Core_Config $config optional. If null, the gateway will use the default
-     * @return Amfphp_Core_Gateway
+     * @return Gateway
      */
     static public function createGateway(Amfphp_Core_Config $config = null){
         $contentType = null;
@@ -50,7 +50,7 @@ class Amfphp_Core_HttpRequestGatewayFactory{
             $contentType = $_SERVER["CONTENT_TYPE"];
         }
         $rawInputData = self::getRawPostData();
-        return new Amfphp_Core_Gateway($_GET, $_POST, $rawInputData, $contentType, $config);
+        return new Gateway($_GET, $_POST, $rawInputData, $contentType, $config);
     }
 }
 ?>

@@ -18,6 +18,8 @@
  * TODO spit into 2 classes, one for Amf0 , one for Amf3 or maybe more.
  *
  * @package Amfphp_Core_Amf
+ * 
+ * TODO: Give This class a more uniform name (AMFSerializer)
  */
 class Amfphp_Core_Amf_Serializer {
 
@@ -125,6 +127,7 @@ class Amfphp_Core_Amf_Serializer {
             $this->outBuffer .= $serializedMessage;
         }
 
+        //throw new Exception("debug exception " . print_r($this->Amf0StoredObjects, true));
         return $this->outBuffer;
     }
 
@@ -289,7 +292,7 @@ class Amfphp_Core_Amf_Serializer {
     }
 
     /**
-     * writeArrayOrObject first determines if the PHP array contains all numeric indexes
+     * writeArrayOrObject first deterines if the PHP array contains all numeric indexes
      * or a mix of keys.  Then it either writes the array code (0x0A) or the
      * object code (0x03) and then the associated data.
      *
@@ -472,7 +475,7 @@ class Amfphp_Core_Amf_Serializer {
                 return;
             }
         }
-        throw new Amfphp_Core_Exception("couldn't write data " . print_r($d));
+        throw new Amfphp_Core_Exception("couldn't write data ");
     }
 
     /*     * ******************************************************************************
@@ -600,12 +603,7 @@ class Amfphp_Core_Amf_Serializer {
 
     }
 
-    /**
-     *@todo understand this bit about circular references! so can use handleReference like everywhere else
-     * @param array $d
-     * @param <type> $arrayCollectionable
-     */
-    protected function writeAmf3Array(array $d) {
+    protected function writeAmf3Array(array $d, $arrayCollectionable = false) {
         //Circular referencing is disabled in arrays
         //Because if the array contains only primitive values,
         //Then === will say that the two arrays are strictly equal
@@ -635,15 +633,8 @@ class Amfphp_Core_Amf_Serializer {
         if (
                 ($str_count > 0 && $num_count == 0) || // Only strings or negative integer keys are present.
                 ($num_count > 0 && $largestKey != $num_count - 1) // Non-negative integer keys are present, but the array is not "dense" (it has gaps).
-        ) { // this is a mixed array. Convert it to an anonymous object(to get get an Object type on the client)
-            $anonymousObject = new stdClass();
-            foreach($numeric as $key => $data){
-                $anonymousObject->$key = $numeric[$key];
-            }
-            foreach($string as $key => $data){
-                $anonymousObject->$key = $string[$key];
-            }
-            $this->writeAmf3Object($anonymousObject);
+        ) { // this is a mixed array
+            $this->writeAmf3ObjectFromArray($numeric + $string); // write the numeric and string keys in the mixed array
         } else { // this is just an array
             $num_count = count($numeric);
 
@@ -663,6 +654,25 @@ class Amfphp_Core_Amf_Serializer {
         }
     }
 
+    /**
+     * Serialise the array as if it is an object.
+     *
+     * @param array $d the array to serialise
+     *
+     * @return nothing
+     */
+    protected function writeAmf3ObjectFromArray(array $d) {
+        //Type this as a dynamic object
+        $this->outBuffer .= "\12\13\1";
+
+        foreach ($d as $key => $val) {
+            $this->writeAmf3String($key);
+            $this->writeAmf3Data($val);
+        }
+
+        //Now we close the open object
+        $this->outBuffer .= "\1";
+    }
 
     /**
      * Return the serialisation of the given integer (Amf3).
@@ -719,13 +729,13 @@ class Amfphp_Core_Amf_Serializer {
         }
     }
 
-    protected function writeAmf3Xml(Amfphp_Core_Amf_Types_Xml $d) {
+    protected function writeAmf3Xml(XML $d) {
         $d = preg_replace('/\>(\n|\r|\r\n| |\t)*\</', '><', trim($d->data));
         $this->writeByte(0x0B);
         $this->writeAmf3String($d);
     }
 
-    protected function writeAmf3XmlDocument(Amfphp_Core_Amf_Types_XmlDocument $d) {
+    protected function writeAmf3XmlDocument(XMLDocument $d) {
         $d = preg_replace('/\>(\n|\r|\r\n| |\t)*\</', '><', trim($d->data));
         $this->writeByte(0x07);
         $this->writeAmf3String($d);
@@ -780,11 +790,13 @@ class Amfphp_Core_Amf_Serializer {
             //no hash available, use array with simple numeric keys
             $key = array_search($obj, $references, TRUE);
             
-            //only store the object for future reference if it isn't already stored, and if there is space left
+            //only store the object for future reference if it isn't already stored, if there is space left and if it isn't a big string
             $doStore = true;
             if($key !== false){
                 $doStore = false;
             }else if(count($references) >= self::MAX_STORED_OBJECTS){
+                $doStore = false;
+            }else if(is_string($obj) && strlen($obj) > 64){
                 $doStore = false;
             }
             if($doStore){

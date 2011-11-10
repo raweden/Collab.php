@@ -10,9 +10,11 @@
  */
 
 /**
- * Amfphp_Core_Amf_Header is a data type that represents a single header passed via Amf
+ * Header is a data type that represents a single header passed via Amf
  *
  * @package Amfphp_Core_Amf
+ * 
+ * TODO: Give This class a more uniform name (AMFHeader)
  */
 
 class Amfphp_Core_Amf_Header

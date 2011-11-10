@@ -17,7 +17,7 @@
  * @package Amfphp_Core_Common
  * @author Ariel Sommeria-klein
  */
-interface Amfphp_Core_Common_IExceptionHandler {
+interface IExceptionHandler{
     /**
      * generates an object describing the exception.
      * @param Exception $exception the exception object to analyze

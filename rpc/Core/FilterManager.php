@@ -16,7 +16,7 @@
  * @package Amfphp_Core
  * @author Ariel Sommeria-klein
  *  */
-class Amfphp_Core_FilterManager{
+class FilterManager{
     /**
      * registered filters
      */
@@ -35,11 +35,11 @@ class Amfphp_Core_FilterManager{
 
     /**
      *
-     * @return Amfphp_Core_FilterManager
+     * @return FilterManager
      */
     public static function getInstance() {
         if (self::$instance == NULL) {
-            self::$instance = new Amfphp_Core_FilterManager();
+            self::$instance = new FilterManager();
         }
         return self::$instance;
     }
@@ -64,7 +64,7 @@ class Amfphp_Core_FilterManager{
             // loop on registered filters
             foreach($this->filtersArray[$filterName] as $callBack){
                 $fromCallee = call_user_func_array($callBack, $filterArgs);
-                if($fromCallee !== null){ //!== null because otherwise array() doesn't qualify
+                if($fromCallee){
                     $filtered = $filterArgs[0] = $fromCallee;
                 }
             }

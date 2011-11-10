@@ -16,6 +16,8 @@
  *
  * @package Amfphp_Core_Common
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name.
  */
 class Amfphp_Core_Common_ClassFindInfo {
     /**

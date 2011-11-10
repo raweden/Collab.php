@@ -13,6 +13,8 @@
  * Amf Undefined will be converted to and from this class
  * @package Amfphp_Core_Amf_Types
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name (Undefined)
  */
 class Amfphp_Core_Amf_Types_Undefined
 {

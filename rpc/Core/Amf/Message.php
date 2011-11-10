@@ -15,13 +15,15 @@
  *
  * @package Amfphp_Core_Amf
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name (AMFMessage)
  */
 class Amfphp_Core_Amf_Message {
     /**
      * inthe case of a request:
      * parsed to a service name and a function name. supported separators for the targetUri are "." and "/"
-     * The service name can either be just the name of the class (TestService) or include a path(package/TestService)
-     * example of full targetUri package/TestService/mirrorFunction
+     * The service name can either be just the name of the class (MirrorService) or include a path(package/MirrorService)
+     * example of full targetUri package/MirrorService/mirrorFunction
      *
      * in the case of a response:
      * the request responseUri + OK/KO
@@ -49,12 +51,6 @@ class Amfphp_Core_Amf_Message {
     public $data;
 
 
-    /**
-     *
-     * @param String $targetUri
-     * @param String $responseUri
-     * @param mixed $data
-     */
     public function  __construct($targetUri = "", $responseUri = "", $data = null) {
         $this->targetUri = $targetUri;
         $this->responseUri = $responseUri;

@@ -14,6 +14,8 @@
  *
  * @package Amfphp_Core_Amf
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name (AMFConstants).
  */
 class Amfphp_Core_Amf_Constants {
     /**

@@ -14,7 +14,7 @@
  * @package Amfphp_Core_Common
  * @author Ariel Sommeria-klein
  */
-interface Amfphp_Core_Common_IDeserializer {
+interface IDeserializer {
     
     /**
      * deserialize the data.

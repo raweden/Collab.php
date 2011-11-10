@@ -16,13 +16,15 @@
  *
  * @package Amfphp_Core_Amf_Types
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name (XML)
  */
 
-class Amfphp_Core_Amf_Types_Xml
+class XML
 {
 	public $data;
 
-	public function Amfphp_Core_Amf_Types_Xml($data)
+	public function XML($data)
 	{
 		$this->data = $data;
 	}

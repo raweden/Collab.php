@@ -18,13 +18,10 @@
 * @package Amfphp_Core_Common
 * @author Ariel Sommeria-klein
 */
-class Amfphp_Core_Common_ServiceRouter{
+class ServiceRouter{
     /**
 * filter called when the service object is created. Useful for authentication
-     * @param Object $serviceObject 
-    * @param string $serviceName
-    * @param string $methodName
-    * @param array $parameters
+* @param String the raw http data
 */
     const FILTER_SERVICE_OBJECT = "FILTER_SERVICE_OBJECT";
      /**
@@ -52,7 +49,6 @@ class Amfphp_Core_Common_ServiceRouter{
     /**
      * get a service object by its name. Looks for a match in serviceNames2ClassFindInfo, then in the defined service folders.
      * If none found, an exception is thrown
-     * @todo maybe option for a fully qualified class name. 
      * @param String $serviceName
      * @return serviceName
      */
@@ -63,17 +59,12 @@ class Amfphp_Core_Common_ServiceRouter{
             require_once $classFindInfo->absolutePath;
             $serviceObject = new $classFindInfo->className();
         }else{
-            $serviceNameWithSlashes = str_replace(".", "/", $serviceName);
-            $serviceIncludePath = $serviceNameWithSlashes . ".php";
-            $exploded = explode("/", $serviceNameWithSlashes);
-            $className = $exploded[count($exploded) - 1];
             //no class find info. try to look in the folders
             foreach($this->serviceFolderPaths as $folderPath){
-                $servicePath = $folderPath .  $serviceIncludePath;
+                $servicePath = $folderPath . $serviceName . ".php";
                 if(file_exists($servicePath)){
                     require_once $servicePath;
-                    $serviceObject = new $className();
-                    break;
+                    $serviceObject = new $serviceName();
                 }
             }
 
@@ -98,7 +89,7 @@ class Amfphp_Core_Common_ServiceRouter{
     */
     public function executeServiceCall($serviceName, $methodName, array $parameters){
         $serviceObject = $this->getServiceObject($serviceName);
-        $serviceObject = Amfphp_Core_FilterManager::getInstance()->callFilters(self::FILTER_SERVICE_OBJECT, $serviceObject, $serviceName, $methodName, $parameters);
+        $serviceObject = FilterManager::getInstance()->callFilters(self::FILTER_SERVICE_OBJECT, $serviceObject, $serviceName, $methodName);
 
         if(!method_exists($serviceObject, $methodName)){
             throw new Amfphp_Core_Exception("method $methodName not found on $serviceName object ");

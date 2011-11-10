@@ -16,7 +16,7 @@
  * @package Amfphp_Core
  * @author Ariel Sommeria-klein
  */
-class Amfphp_Core_Config {
+class GatewayConfig{
 
     /**
      * paths to folders containing services(relative or absolute)
@@ -34,10 +34,10 @@ class Amfphp_Core_Config {
     public $serviceNames2ClassFindInfo;
 
     /**
-     * paths to the folder containing the plugins. defaults to Amfphp_ROOTPATH . "/Plugins/"
-     * @var array
+     * path to the folder containing the plugins. defaults to Amfphp_ROOTPATH . "/Plugins/"
+     * @var String
      */
-    public $pluginsFolders;
+    public $pluginsFolder;
 
     /**
      * array containing untyped plugin configuration data. Add as needed. The advised format is the name of the plugin as key, and then
@@ -48,22 +48,6 @@ class Amfphp_Core_Config {
      * @var array
      */
     public $pluginsConfig;
-    
-    /**
-     * array containing configuration data that is shared between the plugins. The format is paramName/paramValue pairs as an array.
-     * 
-     * @var array
-     */
-    public $sharedConfig;
-    
-    /**
-     * if true, there will be detailed information in the error messages, including confidential information like paths.
-     * So it is advised to set to true for development purposes and to false in production.
-     * Set in the shared config.
-     * @var Boolean
-     */
-    const CONFIG_RETURN_ERROR_DETAILS = "returnErrorDetails";
-    
 
     /**
      * array of plugins that are available but should be disabled
@@ -75,18 +59,14 @@ class Amfphp_Core_Config {
         $this->serviceFolderPaths = array();
         $this->serviceFolderPaths [] = dirname(__FILE__) . "/../Services/";
         $this->serviceNames2ClassFindInfo = array();
-        $this->pluginsFolders = array(Amfphp_ROOTPATH . "Plugins/");
+        $this->pluginsFolder = Amfphp_ROOTPATH . "/Plugins/";
         $this->pluginsConfig = array();
-        
-        $this->sharedConfig = array();
-        $this->sharedConfig[self::CONFIG_RETURN_ERROR_DETAILS] = true;
-        
         $this->disabledPlugins = array();
         //disable logging by default
-        $this->disabledPlugins[] = "AmfphpLogger";
+        $this->disabledPlugins[] = "Logger";
         //this is a bit experimental and only really useful when getting badly formed responses through errors. so disabled by default
-        $this->disabledPlugins[] = "AmfphpErrorHandler";
-        
+        $this->disabledPlugins[] = "ErrorHandler";
     }
+	
 }
 ?>

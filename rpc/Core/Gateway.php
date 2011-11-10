@@ -17,19 +17,7 @@
  * @package Amfphp_Core
  * @author Ariel Sommeria-klein
  */
-class Amfphp_Core_Gateway {
-
-    /**
-     * filter just after plugin init. Use this to add a service folder for a plugin
-     * @param array serviceFolderPaths array of absolute paths
-     */
-    const FILTER_SERVICE_FOLDER_PATHS = "FILTER_SERVICE_FOLDER_PATHS";
-
-    /**
-     * filter just after plugin init. Use this to add a service for a plugin when a service folder isn't enough
-     * @param array serviceNames2ClassFindInfo array of ClassFindInfo. Key is the service nane
-     */
-    const FILTER_SERVICE_NAMES_2_CLASS_FIND_INFO = "FILTER_SERVICE_NAMES_2_CLASS_FIND_INFO";
+class Gateway{
 
     /**
      * filter called when the serialized request comes in.
@@ -40,8 +28,8 @@ class Amfphp_Core_Gateway {
 
     /**
      * filter called to allow a plugin to override the default amf deserializer.
-     * Plugin should return a Amfphp_Core_Common_IDeserializer if it recognizes the content type
-     * @param Amfphp_Core_Common_IDeserializer $deserializer the deserializer. null at call in gateway.
+     * Plugin should return a IDeserializer if it recognizes the content type
+     * @param IDeserializer $deserializer the deserializer. null at call in gateway.
      * @param String $contentType
      */
     const FILTER_DESERIALIZER = "FILTER_DESERIALIZER";
@@ -54,8 +42,8 @@ class Amfphp_Core_Gateway {
 
     /**
      * filter called to allow a plugin to override the default amf deserialized request handler.
-     * Plugin should return a Amfphp_Core_Common_IDeserializedRequestHandler if it recognizes the request
-     * @param Amfphp_Core_Common_IDeserializedRequestHandler $deserializedRequestHandler null at call in gateway.
+     * Plugin should return a IDeserializedRequestHandler if it recognizes the request
+     * @param IDeserializedRequestHandler $deserializedRequestHandler null at call in gateway.
      * @param String $contentType
      */
     const FILTER_DESERIALIZED_REQUEST_HANDLER = "FILTER_DESERIALIZED_REQUEST_HANDLER";
@@ -69,17 +57,17 @@ class Amfphp_Core_Gateway {
     /**
      * filter called to allow a plugin to override the default amf exception handler.
      * If the plugin takes over the handling of the request message,
-     * it must set this to a proper Amfphp_Core_Common_IExceptionHandler
-     * @param Amfphp_Core_Common_IExceptionHandler $exceptionHandler. null at call in gateway.
+     * it must set this to a proper IExceptionHandler
+     * @param IExceptionHandler $exceptionHandler. null at call in gateway.
      * @param String $contentType
      */
     const FILTER_EXCEPTION_HANDLER = "FILTER_EXCEPTION_HANDLER";
 
     /**
      * filter called to allow a plugin to override the default amf serializer.
-     * @param Amfphp_Core_Common_ISerializer $serializer the serializer. null at call in gateway.
+     * @param ISerializer $serializer the serializer. null at call in gateway.
      * @param String $contentType
-     * Plugin sets to a Amfphp_Core_Common_ISerializer if it recognizes the content type
+     * Plugin sets to a ISerializer if it recognizes the content type
      */
     const FILTER_SERIALIZER = "FILTER_SERIALIZER";
 
@@ -134,9 +122,6 @@ class Amfphp_Core_Gateway {
     private $rawOutputData;
 
     /**
-     *
-     */
-    /**
      * constructor
      * @param array $getData typically the $_GET array.
      * @param array $postData typically the $_POST array.
@@ -152,7 +137,7 @@ class Amfphp_Core_Gateway {
         if($config){
             $this->config = $config;
         }else{
-            $this->config = new Amfphp_Core_Config();
+            $this->config = new GatewayConfig();
         }
 
     }
@@ -165,44 +150,37 @@ class Amfphp_Core_Gateway {
      * @return <String> the serialized amf packet containg the service responses
      */
     public function service(){
-        $filterManager = Amfphp_Core_FilterManager::getInstance();
-        $defaultHandler = new Amfphp_Core_Amf_Handler($this->config->sharedConfig);
+        $filterManager = FilterManager::getInstance();
+        $defaultHandler = new Amfphp_Core_Amf_Handler();
         $deserializedResponse = null;
         try{
-            Amfphp_Core_PluginManager::getInstance()->loadPlugins($this->config->pluginsFolders, $this->config->pluginsConfig, $this->config->sharedConfig, $this->config->disabledPlugins);
-            
-            //filter service folder paths
-            $this->config->serviceFolderPaths = $filterManager->callFilters(self::FILTER_SERVICE_FOLDER_PATHS, $this->config->serviceFolderPaths);
-
-            //filter service names 2 class find info
-            $this->config->serviceNames2ClassFindInfo = $filterManager->callFilters(self::FILTER_SERVICE_NAMES_2_CLASS_FIND_INFO, $this->config->serviceNames2ClassFindInfo);
-
-            //filter serialized request 
+            PluginManager::getInstance()->loadPlugins($this->config->pluginsFolder, $this->config->pluginsConfig, $this->config->disabledPlugins);
+            //call filter for filtering serialized incoming packet
             $this->rawInputData = $filterManager->callFilters(self::FILTER_SERIALIZED_REQUEST, $this->rawInputData);
 
-            //filter deserializer
+            //call filter to get the deserializer
             $deserializer = $filterManager->callFilters(self::FILTER_DESERIALIZER, $defaultHandler, $this->contentType);
             
             //deserialize
             $deserializedRequest = $deserializer->deserialize($this->getData, $this->postData, $this->rawInputData);
 
-            //filter deserialized request
+            //call filter for filtering deserialized request
             $deserializedRequest = $filterManager->callFilters(self::FILTER_DESERIALIZED_REQUEST, $deserializedRequest);
 
             //create service router
-            $serviceRouter = new Amfphp_Core_Common_ServiceRouter($this->config->serviceFolderPaths, $this->config->serviceNames2ClassFindInfo);
+            $serviceRouter = new ServiceRouter($this->config->serviceFolderPaths, $this->config->serviceNames2ClassFindInfo);
 
-            //filter deserialized request handler
+            //call filter to get the deserialized request handler
             $deserializedRequestHandler = $filterManager->callFilters(self::FILTER_DESERIALIZED_REQUEST_HANDLER, $defaultHandler, $this->contentType);
 
             //handle request
             $deserializedResponse = $deserializedRequestHandler->handleDeserializedRequest($deserializedRequest, $serviceRouter);
 
-            //filter deserialized response
+            //call filter for filtering the deserialized response
             $deserializedResponse = $filterManager->callFilters(self::FILTER_DESERIALIZED_RESPONSE, $deserializedResponse);
 
         }catch(Exception $exception){
-            //filter exception handler
+            //call filter to get the exception handler
             $exceptionHandler = $filterManager->callFilters(self::FILTER_EXCEPTION_HANDLER, $defaultHandler, $this->contentType);
 
             //handle exception
@@ -210,13 +188,13 @@ class Amfphp_Core_Gateway {
 
         }
 
-        //filter serializer
+        //call filter to get the serializer
         $serializer = $filterManager->callFilters(self::FILTER_SERIALIZER, $defaultHandler, $this->contentType);
 
         //serialize
         $this->rawOutputData = $serializer->serialize($deserializedResponse);
 
-        //filter serialized response 
+        //call filter for filtering the serialized response packet
         $this->rawOutputData = $filterManager->callFilters(self::FILTER_SERIALIZED_RESPONSE, $this->rawOutputData);
 
         return $this->rawOutputData;
@@ -227,9 +205,8 @@ class Amfphp_Core_Gateway {
      * get the response headers. Creates an associative array of headers, then filters them, then returns an array of strings
      * @return array
      */
-    public function getResponseHeaders(){
-        
-        $filterManager = Amfphp_Core_FilterManager::getInstance();
+    public function getResponseHeaders(){        
+        $filterManager = FilterManager::getInstance();
         $headers = array("Content-Type" => $this->contentType);
         $headers = $filterManager->callFilters(self::FILTER_HEADERS, $headers, $this->contentType);
         $ret = array();
@@ -243,13 +220,19 @@ class Amfphp_Core_Gateway {
      * helper function for sending gateway data to output stream
      */
     public function output(){
-
         $responseHeaders = $this->getResponseHeaders();
         foreach($responseHeaders as $header){
             header($header);
         }
         echo $this->rawOutputData;
     }
+
+	/**
+	 *
+	 */
+	public function getContentType(){
+		return $this->contentType;
+	}
 
 }
 ?>

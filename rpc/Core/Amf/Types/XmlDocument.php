@@ -15,13 +15,15 @@
  *
  * @package Amfphp_Core_Amf_Types
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name (XMLDocument)
  */
 
-class Amfphp_Core_Amf_Types_XmlDocument
+class XMLDocument
 {
 	public $data;
 
-	public function Amfphp_Core_Amf_Types_XmlDocument($data)
+	public function XMLDocument($data)
 	{
 		$this->data = $data;
 	}

@@ -15,13 +15,15 @@
  *
  * @package Amfphp_Core_Common
  * @author Ariel Sommeria-klein
+ * 
+ * TODO: Give This class a more uniform name.
  */
 class Amfphp_Core_Common_ServiceCallParameters {
 
 
     /**
      * the name of the service. 
-     * The service name can either be just the name of the class (TestService) or include a path(package/TestService)
+     * The service name can either be just the name of the class (MirrorService) or include a path(package/MirrorService)
      * separator for path can only be "/"
      *
      * @var String

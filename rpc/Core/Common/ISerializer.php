@@ -14,7 +14,7 @@
  * @package Amfphp_Core_Common
  * @author Ariel Sommeria-klein
  */
-interface Amfphp_Core_Common_ISerializer {
+interface ISerializer {
     
     /**
      * Calling this executes the serialization. The return type is noted as a String, but is a binary stream. echo it to the output buffer
