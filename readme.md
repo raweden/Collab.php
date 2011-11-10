@@ -12,11 +12,8 @@ How does it work?
 * Add **XML-RPC** plugin to support another wide range of client-side languages.
 * Remove the naming convention used by the **silexlabs**, in favor of classname without the `Amfphp` and `package` prefixes.
 * Posible add support for sub-directories both in the `Plugins` and `Service` folder, or support for multible plugin folders.
-* Clean up the layout of the default Service browser plugin. (Done but not synced yet)
+* Cleaned up the default Service browser, [click here to preview](http://raweden.se/public/wiki/ServiceBrowser.png). (Done but not synced yet)
 
-### Service Browser
-
-![Preview](http://raweden.se/public/wiki/ServiceBrowser.png)
 
 ### Related Links
 
