@@ -3,7 +3,7 @@
 
 **What is amfphp?**
 
-amfphp is free and open source software, and an essential brick for the development of Web Applications. amfphp is used in projects that cover a wide spectrum, from games to business applications. The role of amfphp is to make connecting an application running in the browser with a server in the cloud as simple as possible. Applications no longer run only on desktops, but must also be available on a variety of smartphones and tablets. It is becoming increasingly complex to code with the diversity of technologies used in these terminals. amfphp is the best solution for creating accessible services to all terminals. Developers can focus on features unique to their projects, regardless of the communication between client and server.
+**amfphp** is free and open source software, and an essential brick for the development of Web Applications. amfphp is used in projects that cover a wide spectrum, from games to business applications. The role of amfphp is to make connecting an application running in the browser with a server in the cloud as simple as possible. Applications no longer run only on desktops, but must also be available on a variety of smartphones and tablets. It is becoming increasingly complex to code with the diversity of technologies used in these terminals. amfphp is the best solution for creating accessible services to all terminals. Developers can focus on features unique to their projects, regardless of the communication between client and server.
 How does it work?
 
 **amfphp** works as an entry point for your client. Your client sends a request to a PHP script on your server where amfphp is loaded. It parses the request, loads the requested service, calls it, and returns the answer accordingly. amfphp is maintained by Silex Labs and this is a fork by **raweden** to develop a uniform bundle to support **rpc** requests from a wide range of languages and platform.
@@ -16,7 +16,6 @@ How does it work?
 
 
 ### Related Links
-
 
 [Documentation](http://silexlabs.org/amfphp/documentation/)  
 [Forums](http://sourceforge.net/projects/amfphp/forums)  
