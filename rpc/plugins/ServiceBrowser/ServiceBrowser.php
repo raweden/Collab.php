@@ -197,7 +197,7 @@ class ServiceBrowser implements IDeserializer, IDeserializedRequestHandler, IExc
 	 */
 	public function serialize($data) {
 		$availableServiceNames = $this->getAvailableServiceNames($this->serviceRouter->serviceFolderPaths, $this->serviceRouter->serviceNames2ClassFindInfo);
-		$message = file_get_contents(__FILE__ . "/top.html");
+		$message = file_get_contents(__DIR__ . "/top.html");
 		$message .= "\n<ul>";
 		// printing service list.
 		foreach ($availableServiceNames as $availableServiceName) {
