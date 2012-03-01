@@ -1,14 +1,4 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Common
- */
-
 
 /**
  * The Service Router class is responsible for executing the remote service method and returning it's value.
@@ -18,13 +8,14 @@
  * @author Ariel Sommeria-klein
  */
 class ServiceRouter{
-
+	
 	/**
 	 * filter called when the service object is created. Useful for authentication
+	 * 
 	 * @param String the raw http data
 	 */
     const FILTER_SERVICE_OBJECT = "FILTER_SERVICE_OBJECT";
-
+     
 	/**
 	 * paths to folders containing services(relative or absolute)
 	 * @var array of paths
@@ -48,9 +39,11 @@ class ServiceRouter{
     }
 
     /**
-     * get a service object by its name. Looks for a match in serviceNames2ClassFindInfo, then in the defined service folders.
+     * Get a service object by its name. Looks for a match in serviceNames2ClassFindInfo, then in the defined service folders.
      * If none found, an exception is thrown
+     * 
      * @param String $serviceName
+     * 
      * @return serviceName
      */
     public function getServiceObject($serviceName){
@@ -78,13 +71,14 @@ class ServiceRouter{
     }
 
     /**
-	 * loads and instanciates a service class matching $serviceName, then calls the function defined by $methodName using $parameters as parameters
+	 * Loads and instanciates a service class matching $serviceName, then calls the function defined by $methodName using $parameters as parameters
      * throws an exception if service not found.
      * if the service exists but not the function, an exception is thrown by call_user_func_array. It is pretty explicit, so no furher code was added
      *
      * @param string $serviceName
      * @param string $methodName
      * @param array $parameters
+     * 
      * @return mixed the result of the function call
      *
      */

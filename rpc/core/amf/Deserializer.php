@@ -1,20 +1,11 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Amf
- */
 
 /**
- * AMFDeserializer takes the raw amf input stream and converts it PHP objects
+ * AmfDeserializer takes the raw amf input stream and converts it PHP objects
  * representing the data.
  *
  */
-class AMFDeserializer{
+class AmfDeserializer{
 	
 	protected $rawData;
 
@@ -44,7 +35,7 @@ class AMFDeserializer{
 
 	/**
      * the Packet contained in the serialized data
-     * @var <AMFPacket>
+     * @var <AmfPacket>
      */
     protected $deserializedPacket;
 
@@ -73,7 +64,7 @@ class AMFDeserializer{
 	 * @param object $amfdata The object to put the deserialized data in
 	 */
 	public function deserialize(){
-		$this->deserializedPacket = new AMFPacket();
+		$this->deserializedPacket = new AmfPacket();
 		$this->readHeaders(); // read the binary headers
 		$this->readMessages(); // read the binary Messages
 		return $this->deserializedPacket;
@@ -106,7 +97,7 @@ class AMFDeserializer{
 			$type = $this->readByte();  // grab the type of the element
 			$content = $this->readData($type);	// turn the element into real data
 
-            $header = new AMFHeader($name, $required, $content);
+            $header = new AmfHeader($name, $required, $content);
 			$this->deserializedPacket->headers[] = $header;
 		}
 	}
@@ -129,7 +120,7 @@ class AMFDeserializer{
 
 			$type = $this->readByte(); // grab the type of the element
 			$data = $this->readData($type); // turn the element into real data
-            $message = new AMFMessage($target, $response, $data);
+            $message = new AmfMessage($target, $response, $data);
             $this->deserializedPacket->messages[] = $message;
 		}
 	}
@@ -194,7 +185,7 @@ class AMFDeserializer{
 				return $this->readUTF();
 			case 3: // object Object
 				return $this->readObject();
-            		//ignore movie clip (reserved, not supported).
+            		// 0x04 ignore movie clip (reserved, not supported), not implemented in amf specs.
 			case 5: // null
 				return null;
 			case 6: // undefined
@@ -209,7 +200,7 @@ class AMFDeserializer{
 				return $this->readArray();
 			case 0X0B: // date
 				return $this->readDate();
-			case 0X0C: // string, strlen(string) > 2^16
+			case 0X0C: // string, strlen(string) > 2^16 (bigger than 64k).
 				return $this->readLongUTF();
 			case 0X0D: // mainly internal AS objects
 				return null;
@@ -235,7 +226,7 @@ class AMFDeserializer{
 	protected function readDouble(){
 		$bytes = substr($this->rawData, $this->currentByte, 8);
 		$this->currentByte += 8;
-		if (AMFUtil::isSystemBigEndian()){
+		if (AmfUtil::isSystemBigEndian()){
 			$bytes = strrev($bytes);
 		}
 		$zz = unpack("dflt", $bytes); // unpack the bytes
@@ -382,7 +373,8 @@ class AMFDeserializer{
 	}
 	
 	/**
-	* read the type byte, then call the corresponding amf3 data reading function 
+	* read the type byte, then call the corresponding amf3 data reading function
+	* 
 	* @return mixed
 	*/
 	public function readAmf3Data(){

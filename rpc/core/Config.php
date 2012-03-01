@@ -1,19 +1,8 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core
- */
-
 
 /**
  * responsable for loading and maintaining Amfphp configuration
- *
- * @package Amfphp_Core
+ * 
  * @author Ariel Sommeria-klein
  */
 class GatewayConfig{
@@ -34,7 +23,7 @@ class GatewayConfig{
     public $serviceNames2ClassFindInfo;
 
     /**
-     * path to the folder containing the plugins. defaults to Amfphp_ROOTPATH . "/Plugins/"
+     * path to the folder containing the plugins. defaults to AMFPHP_ROOTPATH . "/Plugins/"
      * @var String
      */
     public $pluginsFolder;
@@ -57,9 +46,9 @@ class GatewayConfig{
 
     public function  __construct() {
         $this->serviceFolderPaths = array();
-        $this->serviceFolderPaths [] = dirname(__FILE__) . "/../Services/";
+        $this->serviceFolderPaths [] = dirname(__FILE__) . "/../services/";
         $this->serviceNames2ClassFindInfo = array();
-        $this->pluginsFolder = Amfphp_ROOTPATH . "/Plugins/";
+        $this->pluginsFolder = AMFPHP_ROOTPATH . "/plugins/";
         $this->pluginsConfig = array();
         $this->disabledPlugins = array();
         //disable logging by default

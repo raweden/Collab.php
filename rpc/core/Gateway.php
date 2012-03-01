@@ -1,19 +1,10 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core
- */
-
 
 /**
  * where everything comes together in amfphp.
  * The class used for the entry point of a remoting call
- *  
+ *
+ * @package Amfphp_Core
  * @author Ariel Sommeria-klein
  */
 class Gateway{
@@ -133,6 +124,9 @@ class Gateway{
         $this->postData = $postData;
         $this->rawInputData = $rawInputData;
         $this->contentType = $contentType;
+		// TODO: better implementation of directing content-type to services.
+		define("CONTENT_TYPE",$contentType);
+
         if($config){
             $this->config = $config;
         }else{
@@ -142,7 +136,7 @@ class Gateway{
     }
     
     /**
-     * The service method runs the gateway application.  It deserializes the raw data passed into the constructor as an Amfphp_Core_Amf_Packet, handles the headers,
+     * The service method runs the gateway application.  It deserializes the raw data passed into the constructor as an AmfPacket, handles the headers,
      * handles the messages as requests to services, and returns the responses from the services
      * It does not however handle output headers, gzip compression, etc. that is the job of the calling script
      *
@@ -150,7 +144,7 @@ class Gateway{
      */
     public function service(){
         $filterManager = FilterManager::getInstance();
-        $defaultHandler = new Amfphp_Core_Amf_Handler();
+        $defaultHandler = new AmfHandler();
         $deserializedResponse = null;
         try{
             PluginManager::getInstance()->loadPlugins($this->config->pluginsFolder, $this->config->pluginsConfig, $this->config->disabledPlugins);

@@ -1,17 +1,7 @@
 <?php
 /**
- *  This file is part of amfPHP
  *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Common
- */
-
-/**
- *
- * place holder class for the variables necessary to make a service call
+ * Placeholder class for the variables necessary to make a service call
  * 
  * @author Ariel Sommeria-klein
  */

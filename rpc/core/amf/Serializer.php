@@ -1,22 +1,13 @@
 <?php
 /**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- */
-
-/**
  * AmfSerializer manages the job of translating PHP objects into
  * the actionscript equivalent via Amf.  The main method of the serializer
  * is the serialize method which takes and AmfObject as it's argument
  * and builds the resulting Amf Message.
  * 
- * @TODO spit into 2 classes, one for Amf0 , one for Amf3 or maybe more.
+ *  @TODO spit into 2 classes, one for Amf0 , one for Amf3 or maybe more.
  */
-class AMFSerializer {
+class AmfSerializer {
 
 	/**
 	 *
@@ -25,7 +16,7 @@ class AMFSerializer {
 	private $outBuffer;
 	/**
 	 *
-	 * @var AMFPacket
+	 * @var AmfPacket
 	 */
 	private $packet;
 
@@ -59,9 +50,9 @@ class AMFSerializer {
 
 	/**
 	 *
-	 * @param {AMFPacket} $packet
+	 * @param {AmfPacket} $packet
 	 */
-	public function __construct(AMFPacket $packet){
+	public function __construct(AmfPacket $packet){
 		$this->packet = $packet;
 		$this->resetReferences();
 	}
@@ -77,8 +68,7 @@ class AMFSerializer {
 	}
 
 	/**
-	 * serializes the Packet passed in the constructor
-	 * TODO clean up the mess with the temp buffers. A.S.
+	 * Serializes the Packet passed in the constructor.
 	 */
 	public function serialize() {
 		$this->writeInt(0); //  write the version (always 0)
@@ -121,7 +111,6 @@ class AMFSerializer {
 			$this->outBuffer .= $serializedMessage;
 		}
 
-		//throw new Exception("debug exception " . print_r($this->Amf0StoredObjects, true));
 		return $this->outBuffer;
 	}
 
@@ -130,8 +119,7 @@ class AMFSerializer {
 	}
 
 	/**
-	 * writeByte writes a singe byte to the output stream
-	 * 0-255 range
+	 * writeByte writes a singe byte to the output stream, 0-255 range.
 	 *
 	 * @param int $b An int that can be converted to a byte
 	 */
@@ -140,8 +128,7 @@ class AMFSerializer {
 	}
 
 	/**
-	 * writeInt takes an int and writes it as 2 bytes to the output stream
-	 * 0-65535 range
+	 * writeInt takes an int and writes it as 2 bytes to the output stream, 0-65535 range.
 	 *
 	 * @param int $n An integer to convert to a 2 byte binary string
 	 */
@@ -168,7 +155,7 @@ class AMFSerializer {
 	 */
 	protected function writeDouble($d) {
 		$b = pack("d", $d); // pack the bytes
-		if (AMFUtil::isSystemBigEndian()) { // if we are a big-endian processor
+		if (AmfUtil::isSystemBigEndian()) { // if we are a big-endian processor
 			$r = strrev($b);
 		} else { // add the bytes to the output
 			$r = $b;
@@ -223,7 +210,7 @@ class AMFSerializer {
 		if ($count < 65536) {
 			$this->writeByte(2);
 			$this->writeUTF($d);
-		} else {
+		}else {
 			$this->writeByte(12);
 			$this->writeLongUTF($d);
 		}
@@ -445,16 +432,16 @@ class AMFSerializer {
 		} elseif (is_null($d)) { // null
 			$this->writeNull();
 			return;
-		} elseif (AMFUtil::is_undefined($d)) { // undefined
+		} elseif (AmfUtil::is_undefined($d)) { // undefined
 			$this->writeUndefined();
 			return;
 		} elseif (is_array($d)) { // array
 			$this->writeArrayOrObject($d);
 			return;
-		} elseif (AMFUtil::is_date($d)) { // date
+		} elseif (AmfUtil::is_date($d)) { // date
 			$this->writeDate($d);
 			return;
-		} elseif (AMFUtil::is_Xml ($d)) { // Xml (note, no XmlDoc in AMF0)
+		} elseif (AmfUtil::is_Xml ($d)) { // Xml (note, no XmlDoc in AMF0)
 			$this->writeXML($d);
 			return;
 		} elseif (is_object($d)) {
@@ -501,22 +488,22 @@ class AMFSerializer {
 		} elseif (is_null($d)) { // null
 			$this->writeAmf3Null();
 			return;
-		} elseif (AMFUtil::is_undefined($d)) { // undefined
+		} elseif (AmfUtil::is_undefined($d)) { // undefined
 			$this->writeAmf3Undefined();
 			return;
-		} elseif (AMFUtil::is_date($d)) { // date
+		} elseif (AmfUtil::is_date($d)) { // date
 			$this->writeAmf3Date($d);
 			return;
 		} elseif (is_array($d)) { // array
 			$this->writeAmf3Array($d);
 			return;
-		} elseif (AMFUtil::is_byteArray($d)) { //byte array
+		} elseif (AmfUtil::is_byteArray($d)) { //byte array
 			$this->writeAmf3ByteArray($d->data);
 			return;
-		} elseif (AMFUtil::is_Xml ($d)) { // Xml
+		} elseif (AmfUtil::is_Xml ($d)) { // Xml
 			$this->writeAmf3Xml($d);
 			return;
-		} elseif (AMFUtil::is_XmlDocument ($d)) { // XmlDoc
+		} elseif (AmfUtil::is_XmlDocument ($d)) { // XmlDoc
 			$this->writeAmf3XmlDocument($d);
 			return;
 		} elseif (is_object($d)) {

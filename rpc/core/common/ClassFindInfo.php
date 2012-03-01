@@ -1,21 +1,10 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Common
- */
-
 
 /**
  * The information necessary for a service router to be able to load a class' file and instanciate it
  * could be extended later with namespaces when they become mainstream
  *
  * @author Ariel Sommeria-klein
- * 
  */
 class ClassFindInfo{
     /**

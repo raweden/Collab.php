@@ -1,19 +1,9 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core
- */
 
 /**
  * A gateway factory's job is to create a gateway. There can be many gateway factories, but as such the only one for now is this one,
  * which creates a gateway assuming that the data to be processed is in an http request and thus available through the usual php globals
- *
- * @package Amfphp_Core
+ * 
  * @author Ariel Sommeria-Klein
  */
 class HttpRequestGatewayFactory{

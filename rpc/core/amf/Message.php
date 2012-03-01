@@ -1,20 +1,10 @@
 <?php
 /**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Amf
- */
-
-/**
- * AMFMessage is a data type that encapsulates all of the various properties a Message object can have.
+ * AmfMessage is a data type that encapsulates all of the various properties a Message object can have.
  * 
  * @author Ariel Sommeria-klein
  */
-class AMFMessage {
+class AmfMessage {
 	
 	/**
 	 * inthe case of a request:

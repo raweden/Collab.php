@@ -1,19 +1,10 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core
- */
 
 /**
  * This class is a kind of event dispatcher <br />
  * Filters are provided by Amfphp to allow your contexts to 'filter into' the rest of Amfphp, i.e. to call functions in your context at specific times<br />
  * This is a singleton, so use getInstance
- * 
+ *  
  * @author Ariel Sommeria-klein
  */
 class FilterManager{

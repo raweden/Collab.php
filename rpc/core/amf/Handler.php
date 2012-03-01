@@ -1,30 +1,21 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Amf
- */
 
 /**
  * This is the default handler for the gateway. It's job is to handle everything that is specific to Amf for the gateway.
  * 
  * @author Ariel Sommeria-Klein
- * 
- * TODO: Give This class a more uniform name (AMFHandler)
  */
-class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExceptionHandler, ISerializer{
+class AmfHandler implements IDeserializer, IDeserializedRequestHandler, IExceptionHandler, ISerializer{
 	
 	
 	/**
 	 * filter called for each amf request header, to give a plugin the chance to handle it.
 	 * Unless a plugin handles them, amf headers are ignored
 	 * Headers embedded in the serialized requests are regarded to be a Amf specific, so they get their filter in Amf Handler
+	 * 
 	 * @param Object $handler. null at call. Return if the plugin can handle
-	 * @param AMFHeader $header the request header
+	 * @param AmfHeader $header the request header
+	 * 
 	 * @todo consider an interface for $handler. Maybe overkill here
 	 */
 	const FILTER_AMF_REQUEST_HEADER_HANDLER = "FILTER_AMF_REQUEST_HEADER_HANDLER";
@@ -32,8 +23,10 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	/**
 	 * filter called for each amf request message, to give a plugin the chance to handle it.
 	 * This is for the Flex Messaging plugin to be able to intercept the message and say it wants to handle it
+	 * 
 	 * @param Object $handler. null at call. Return if the plugin can handle
-	 * @param AMFMessage $requestMessage the request message
+	 * @param AmfMessage $requestMessage the request message
+	 * 
 	 * @todo consider an interface for $handler. Maybe overkill here
 	 */
 	const FILTER_AMF_REQUEST_MESSAGE_HANDLER = "FILTER_AMF_REQUEST_MESSAGE_HANDLER";
@@ -41,7 +34,9 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	/**
 	 * filter called for exception handling an Amf packet/message, to give a plugin the chance to handle it.
 	 * This is for the Flex Messaging plugin to be able to intercept the exception and say it wants to handle it
+	 * 
 	 * @param Object $handler. null at call. Return if the plugin can handle
+	 * 
 	 * @todo consider an interface for $handler. Maybe overkill here
 	 */
 	const FILTER_AMF_EXCEPTION_HANDLER = "FILTER_AMF_EXCEPTION_HANDLER";
@@ -60,10 +55,10 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	}
 	
 	/**
-	 * @see Amfphp_Core_Common_IDeserializer
+	 * @see IDeserializer
 	 */
 	public function deserialize(array $getData, array $postData, $rawPostData){
-		$deserializer = new AMFDeserializer($rawPostData);
+		$deserializer = new AmfDeserializer($rawPostData);
 		$requestPacket = $deserializer->deserialize();
 		
 		$this->objectEncoding = $requestPacket->amfVersion;
@@ -72,18 +67,20 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	}
 	
 	/**
-	 * creates a ServiceCallParamaeters object from an AMFMessage
+	 * Creates a ServiceCallParamaeters object from an AmfMessage
 	 * supported separators in the targetUri are "/" and "."
-	 * @param AMFMessage $AMFMessage
+	 * 
+	 * @param AmfMessage $AmfMessage
+	 * 
 	 * @return ServiceCallParameters
 	 */
-	private function getServiceCallParameters(AMFMessage $AMFMessage){
-		$targetUri = str_replace(".", "/", $AMFMessage->targetUri);
+	private function getServiceCallParameters(AmfMessage $AmfMessage){
+		$targetUri = str_replace(".", "/", $AmfMessage->targetUri);
 		$split = explode("/", $targetUri);
 		$ret = new ServiceCallParameters();
 		$ret->methodName = array_pop($split);
 		$ret->serviceName = join($split, "/");
-		$ret->methodParameters = $AMFMessage->data;
+		$ret->methodParameters = $AmfMessage->data;
 		return $ret;
 	}
 	
@@ -91,10 +88,11 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	 * process a request and generate a response.
 	 * throws an Exception if anything fails, so caller must encapsulate in try/catch
 	 *
-	 * @param AMFMessage $requestMessage
-	 * @return AMFMessage the response Message for the request
+	 * @param AmfMessage $requestMessage
+	 * 
+	 * @return AmfMessage the response Message for the request
 	 */
-	private function handleRequestMessage(AMFMessage $requestMessage, ServiceRouter $serviceRouter){
+	private function handleRequestMessage(AmfMessage $requestMessage, ServiceRouter $serviceRouter){
 		$filterManager = FilterManager::getInstance();
 		$fromFilters = $filterManager->callFilters(self::FILTER_AMF_REQUEST_MESSAGE_HANDLER, null, $requestMessage);
 		if($fromFilters){
@@ -105,7 +103,7 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 		//plugins didn't do any special handling. Assumes this is a simple Amfphp_Core_Amf_ RPC call
 		$serviceCallParameters = $this->getServiceCallParameters($requestMessage);
 		$ret = $serviceRouter->executeServiceCall($serviceCallParameters->serviceName, $serviceCallParameters->methodName, $serviceCallParameters->methodParameters);
-		$responseMessage = new AMFMessage();
+		$responseMessage = new AmfMessage();
 		$responseMessage->data = $ret;
 		$responseMessage->targetUri = $requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD;
 		//not specified
@@ -131,7 +129,7 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 
 		$numMessages = count($deserializedRequest->messages);
 		$rawOutputData = "";
-		$responsePacket = new AMFPacket();
+		$responsePacket = new AmfPacket();
 		$responsePacket->amfVersion = $deserializedRequest->amfVersion;
 		for($i = 0; $i < $numMessages; $i++){
 			$requestMessage = $deserializedRequest->messages[$i];
@@ -144,10 +142,10 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	}
 
 	/**
-	 * @see Amfphp_Core_Common_IExceptionHandler
+	 * @see IExceptionHandler
 	 */
 	public function handleException(Exception $exception){
-		$errorPacket = new AMFPacket();
+		$errorPacket = new AmfPacket();
 		$filterManager = FilterManager::getInstance();
 		$fromFilters = $filterManager->callFilters(self::FILTER_AMF_EXCEPTION_HANDLER, null);
 		if($fromFilters){
@@ -157,7 +155,7 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 
 		//no special handling by plugins. generate a simple error response with information about the exception
 		$errorResponseMessage = null;
-		$errorResponseMessage = new AMFMessage();
+		$errorResponseMessage = new AmfMessage();
 		$errorResponseMessage->targetUri = $this->lastRequestMessageResponseUri . AMFConstants::CLIENT_FAILURE_METHOD;
 		//not specified
 		$errorResponseMessage->responseUri = "null";
@@ -170,16 +168,16 @@ class AMFHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 		return $errorPacket;
 		
 	}
-	
+
 	/**
-	 * @see Amfphp_Core_Common_ISerializer
+	 * @see ISerializer
 	 */
 	public function serialize($data){
 		$data->amfVersion = $this->objectEncoding;
-		
-		$serializer = new AMFSerializer($data);
+
+		$serializer = new AmfSerializer($data);
 		return $serializer->serialize();
-		
+
 	}
 
 }

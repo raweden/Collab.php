@@ -54,8 +54,8 @@ class FlexMessaging{
      * @param array $config optional key/value pairs in an associative array. Used to override default configuration values.
      */
     public function  __construct(array $config = null) {
-        FilterManager::getInstance()->addFilter(AMFHandler::FILTER_AMF_REQUEST_MESSAGE_HANDLER, $this, "filterAmfRequestMessageHandler");
-        FilterManager::getInstance()->addFilter(AMFHandler::FILTER_AMF_EXCEPTION_HANDLER, $this, "filterAmfExceptionHandler");
+        FilterManager::getInstance()->addFilter(AmfHandler::FILTER_AMF_REQUEST_MESSAGE_HANDLER, $this, "filterAmfRequestMessageHandler");
+        FilterManager::getInstance()->addFilter(AmfHandler::FILTER_AMF_EXCEPTION_HANDLER, $this, "filterAmfExceptionHandler");
         $this->clientUsesFlexMessaging = false;
     }
 
@@ -63,10 +63,10 @@ class FlexMessaging{
      *
      * @param Object $handler. null at call. If the plugin takes over the handling of the request message,
      * it must set this to a proper handler for the message, probably itself.
-     * @param AMFMessage $requestMessage the request message
+     * @param AmfMessage $requestMessage the request message
      * @return array
      */
-    public function filterAmfRequestMessageHandler($handler, AMFMessage $requestMessage){
+    public function filterAmfRequestMessageHandler($handler, AmfMessage $requestMessage){
 
         //for test purposes
         //throw new RemotingException(print_r($requestMessage->data[0], true));
@@ -104,11 +104,11 @@ class FlexMessaging{
 
     /**
      * handle the request message instead of letting the Amf Handler do it.
-     * @param AMFMessage $requestMessage
+     * @param AmfMessage $requestMessage
      * @param Amfphp_Core_Common_ServiceRouter $serviceRouter
-     * @return AMFMessage
+     * @return AmfMessage
      */
-    public function handleRequestMessage(AMFMessage $requestMessage, Amfphp_Core_Common_ServiceRouter $serviceRouter){
+    public function handleRequestMessage(AmfMessage $requestMessage, Amfphp_Core_Common_ServiceRouter $serviceRouter){
         $explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
         $messageType = $requestMessage->data[0]->$explicitTypeField;
         $messageIdField = self::FIELD_MESSAGE_ID;
@@ -119,7 +119,7 @@ class FlexMessaging{
         if($messageType == self::FLEX_TYPE_COMMAND_MESSAGE){
             //command message. An empty AcknowledgeMessage is expected.
             $acknowledge = new AcknowledgeMessage($requestMessage->data[0]->$messageIdField);
-            return new AMFMessage($requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
+            return new AmfMessage($requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
 
         }
 
@@ -130,7 +130,7 @@ class FlexMessaging{
             $serviceCallResult = $serviceRouter->executeServiceCall($remoting->source, $remoting->operation, $remoting->body);
             $acknowledge = new AcknowledgeMessage($remoting->$messageIdField);
             $acknowledge->body = $serviceCallResult;
-            return new AMFMessage($requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
+            return new AmfMessage($requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
 
         }
         throw new RemotingException("unrecognized flex message");
@@ -138,7 +138,7 @@ class FlexMessaging{
 
     /**
      * flex expects error messages formatted in a special way, using the ErrorMessage object.
-     * @return AMFPacket
+     * @return AmfPacket
      * @param Exception $exception
      */
     public function generateErrorResponse(Exception $exception){
@@ -146,8 +146,8 @@ class FlexMessaging{
         $error->faultCode = $exception->getCode();
         $error->faultString = $exception->getMessage();
         $error->faultDetail = $exception->getTraceAsString();
-        $errorMessage = new AMFMessage($this->lastFlexMessageResponseUri . AMFConstants::CLIENT_FAILURE_METHOD, null, $error);
-        $errorPacket = new AMFPacket();
+        $errorMessage = new AmfMessage($this->lastFlexMessageResponseUri . AMFConstants::CLIENT_FAILURE_METHOD, null, $error);
+        $errorPacket = new AmfPacket();
         $errorPacket->messages[] = $errorMessage;
         return $errorPacket;
     }

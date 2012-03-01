@@ -36,7 +36,7 @@ class Logger{
     public static function logMessage($message){
         $fh = fopen(__DIR__ . "/" . self::LOG_FILE_PATH, 'a');
         if(!$fh){
-            throw new Amfphp_Core_Exception("couldn't open log file for writing");
+            throw new RemotingException("couldn't open log file for writing");
         }
         fwrite($fh, $message . "\n");
         fclose($fh);

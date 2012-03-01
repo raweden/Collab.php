@@ -1,17 +1,9 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- */
 
 /**
  * Header is a data type that represents a single header passed via Amf
  */
-class AMFHeader{
+class AmfHeader{
 	
 	/**
 	 * Name is the string name of the header key
@@ -31,17 +23,16 @@ class AMFHeader{
 	public $required;
 
 	/**
-	 * data is the actual object data of the header key
+	 * Data is the actual object data of the header key
 	 *
 	 * @var mixed
 	 */
 	public $data;
 
 	/**
-	 * AMFHeader is the Constructor function for the AMFHeader data type.
+	 * AmfHeader is the Constructor function for the AmfHeader data type.
 	 */
-	public function __construct($name = "", $required = false, $data = null)
-	{
+	public function __construct($name = "", $required = false, $data = null){
 		$this->name = $name;
 		$this->required = $required;
 		$this->data = $data;

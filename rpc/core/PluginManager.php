@@ -1,13 +1,4 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core
- */
 
 /**
  * Loads plugins for Amfphp. Plugins consist of a folder in the plugins folder. The folder and the class
@@ -16,8 +7,7 @@
  *  A plugin interacts with Amfphp by using the Amfphp_Core_FilterManager to register its functions
  * to be called at specific times with specific parameters during execution.
  * It's a singleton, so use getInstance
- *
- * @package Amfphp_Core
+ * 
  * @author Ariel Sommeria-Klein
  */
 class PluginManager{
@@ -64,7 +54,7 @@ class PluginManager{
     public function loadPlugins($rootFolder, array $pluginsConfig = null, array $disabledPlugins = null){
         $pluginsFolderRootPath = $rootFolder;
         if(!is_dir($rootFolder)){
-            throw new Amfphp_Core_Exception("invalid path for loading plugins at " . $rootFolder);
+            throw new RemotingException("invalid path for loading plugins at " . $rootFolder);
         }
         $folderContent = scandir($pluginsFolderRootPath);
         $pluginDescriptors = array();

@@ -1,14 +1,4 @@
 <?php
-/**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Plugins_Authentication
- */
-
 /** 
  * Authentication for Amfphp.
  * On a service object, the plugin looks for a method called getMethodRoles. If the method exists, the plugin will look for a role in the session that matches the role.
@@ -36,7 +26,6 @@
  * 
  * See the AuthenticationService class in the test data for an example of an implementation.
  *
- * @package Amfphp_Plugins_Authentication
  * @author Ariel Sommeria-klein
  */
 class Authentication{
@@ -74,18 +63,18 @@ class Authentication{
     public function  __construct(array $config = null) {
         $filterManager = FilterManager::getInstance();
         $filterManager->addFilter(ServiceRouter::FILTER_SERVICE_OBJECT, $this, "filterServiceObject");
-        $filterManager->addFilter(Amfphp_Core_Amf_Handler::FILTER_AMF_REQUEST_HEADER_HANDLER, $this, "filterAmfRequestHeaderHandler");
+        $filterManager->addFilter(AmfHandler::FILTER_AMF_REQUEST_HEADER_HANDLER, $this, "filterAmfRequestHeaderHandler");
         $this->headerUserId = null;
         $this->headerPassword = null;
     }
 
     /**
      * @param Object $handler
-     * @param AMFHeader $header the request header
+     * @param AmfHeader $header the request header
      * @return Authentication 
      */
-    public function filterAmfRequestHeaderHandler($handler, AMFHeader $header){
-        if($header->name == Amfphp_Core_Amf_Constants::CREDENTIALS_HEADER_NAME){
+    public function filterAmfRequestHeaderHandler($handler, AmfHeader $header){
+        if($header->name == AMFConstants::CREDENTIALS_HEADER_NAME){
             return $this;
         }
     }
@@ -123,12 +112,12 @@ class Authentication{
         }
 
         if(!isset ($_SESSION[self::SESSION_FIELD_ROLES])){
-            throw new Amfphp_Core_Exception("User not authenticated");
+            throw new RemotingException("User not authenticated");
         }
 
         $userRoles = $_SESSION[self::SESSION_FIELD_ROLES];
         if(!$this->doRolesMatch($userRoles, $acceptedRoles)){
-            throw new Amfphp_Core_Exception("roles don't match");
+            throw new RemotingException("roles don't match");
         }
     }
     
@@ -191,15 +180,15 @@ class Authentication{
 
     /**
      * looks for a "Credentials" request header. If there is one, uses it to try to authentify the user.
-     * @param AMFHeader $header the request header
+     * @param AmfHeader $header the request header
      * @return void
      */
-    public function handleRequestHeader(AMFHeader $header){
-        if($header->name != Amfphp_Core_Amf_Constants::CREDENTIALS_HEADER_NAME){
-            throw new Amfphp_Core_Exception("not an authentication amf header. type: " . $header->name);
+    public function handleRequestHeader(AmfHeader $header){
+        if($header->name != AMFConstants::CREDENTIALS_HEADER_NAME){
+            throw new RemotingException("not an authentication amf header. type: " . $header->name);
         }
-        $userIdField = Amfphp_Core_Amf_Constants::CREDENTIALS_FIELD_USERID;
-        $passwordField = Amfphp_Core_Amf_Constants::CREDENTIALS_FIELD_PASSWORD;
+        $userIdField = AMFConstants::CREDENTIALS_FIELD_USERID;
+        $passwordField = AMFConstants::CREDENTIALS_FIELD_PASSWORD;
         $userId = $header->data->$userIdField;
         $password = $header->data->$passwordField;
         if(session_id () == ""){

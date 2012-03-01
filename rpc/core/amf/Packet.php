@@ -1,20 +1,10 @@
 <?php
 /**
- *  This file is part of amfPHP
- *
- * LICENSE
- *
- * This source file is subject to the license that is bundled
- * with this package in the file license.txt.
- * @package Amfphp_Core_Amf
- */
-
-/**
  * content holder for an Amf Packet.
  * 
  * @author Ariel Sommeria-klein
  */
-class AMFPacket {
+class AmfPacket {
 	/**
 	 * The place to keep the headers data
 	 *
@@ -30,7 +20,9 @@ class AMFPacket {
 	public $messages;
 
 	/**
-	 * either 0 or 3. This is stored here when deserializing, because the serializer needs the info
+	 * Determines the amf format version, value is either 0 or 3. 
+	 * This is stored here when deserializing, because the serializer needs it.
+	 * 
 	 * @var <int>
 	 */
 	public $amfVersion;
