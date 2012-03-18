@@ -6,7 +6,7 @@
  * @author Ariel Sommeria-klein
  * 
  */
-class AMFConstants {
+class AmfConstants {
     
     /**
      * The success method name

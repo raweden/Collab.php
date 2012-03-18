@@ -74,7 +74,7 @@ class Authentication{
      * @return Authentication 
      */
     public function filterAmfRequestHeaderHandler($handler, AmfHeader $header){
-        if($header->name == AMFConstants::CREDENTIALS_HEADER_NAME){
+        if($header->name == AmfConstants::CREDENTIALS_HEADER_NAME){
             return $this;
         }
     }
@@ -184,11 +184,11 @@ class Authentication{
      * @return void
      */
     public function handleRequestHeader(AmfHeader $header){
-        if($header->name != AMFConstants::CREDENTIALS_HEADER_NAME){
+        if($header->name != AmfConstants::CREDENTIALS_HEADER_NAME){
             throw new RemotingException("not an authentication amf header. type: " . $header->name);
         }
-        $userIdField = AMFConstants::CREDENTIALS_FIELD_USERID;
-        $passwordField = AMFConstants::CREDENTIALS_FIELD_PASSWORD;
+        $userIdField = AmfConstants::CREDENTIALS_FIELD_USERID;
+        $passwordField = AmfConstants::CREDENTIALS_FIELD_PASSWORD;
         $userId = $header->data->$userIdField;
         $password = $header->data->$passwordField;
         if(session_id () == ""){

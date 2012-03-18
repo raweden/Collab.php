@@ -75,7 +75,7 @@ class FlexMessaging{
             return;
         }
 
-        $explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+        $explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
 
         if(!isset ($requestMessage->data[0]) || !isset ($requestMessage->data[0]->$explicitTypeField)){
             //and all flex messages have data containing one object with an explicit type
@@ -109,7 +109,7 @@ class FlexMessaging{
      * @return AmfMessage
      */
     public function handleRequestMessage(AmfMessage $requestMessage, Amfphp_Core_Common_ServiceRouter $serviceRouter){
-        $explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+        $explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
         $messageType = $requestMessage->data[0]->$explicitTypeField;
         $messageIdField = self::FIELD_MESSAGE_ID;
         $this->lastFlexMessageId = $requestMessage->data[0]->$messageIdField;
@@ -119,7 +119,7 @@ class FlexMessaging{
         if($messageType == self::FLEX_TYPE_COMMAND_MESSAGE){
             //command message. An empty AcknowledgeMessage is expected.
             $acknowledge = new AcknowledgeMessage($requestMessage->data[0]->$messageIdField);
-            return new AmfMessage($requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
+            return new AmfMessage($requestMessage->responseUri . AmfConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
 
         }
 
@@ -130,7 +130,7 @@ class FlexMessaging{
             $serviceCallResult = $serviceRouter->executeServiceCall($remoting->source, $remoting->operation, $remoting->body);
             $acknowledge = new AcknowledgeMessage($remoting->$messageIdField);
             $acknowledge->body = $serviceCallResult;
-            return new AmfMessage($requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
+            return new AmfMessage($requestMessage->responseUri . AmfConstants::CLIENT_SUCCESS_METHOD, null, $acknowledge);
 
         }
         throw new RemotingException("unrecognized flex message");
@@ -146,7 +146,7 @@ class FlexMessaging{
         $error->faultCode = $exception->getCode();
         $error->faultString = $exception->getMessage();
         $error->faultDetail = $exception->getTraceAsString();
-        $errorMessage = new AmfMessage($this->lastFlexMessageResponseUri . AMFConstants::CLIENT_FAILURE_METHOD, null, $error);
+        $errorMessage = new AmfMessage($this->lastFlexMessageResponseUri . AmfConstants::CLIENT_FAILURE_METHOD, null, $error);
         $errorPacket = new AmfPacket();
         $errorPacket->messages[] = $errorMessage;
         return $errorPacket;

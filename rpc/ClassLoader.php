@@ -1,9 +1,8 @@
 <?php
+
 /**
- * include this to include amf-php
- * note: this list could be generated. In the meantime maintain it manually. 
- * It would be nice to do this alphabetically, It seems however that an interface must be loaded before a class, so do as possible
- *
+ * Includes runtime.
+ * 
  * @author Ariel Sommeria-klein
  */
 

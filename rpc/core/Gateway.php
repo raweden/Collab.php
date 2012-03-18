@@ -11,7 +11,8 @@ class Gateway{
 
     /**
      * filter called when the serialized request comes in.
-     * @todo this filter only allows manipulation of raw post data, and is as such a bit misleading. Maybe rename and do filters for GET and POST
+     * 
+	 * @todo this filter only allows manipulation of raw post data, and is as such a bit misleading. Maybe rename and do filters for GET and POST
      * @param String $rawData the raw http data
      */
     const FILTER_SERIALIZED_REQUEST = "FILTER_SERIALIZED_REQUEST";
@@ -19,28 +20,32 @@ class Gateway{
     /**
      * filter called to allow a plugin to override the default amf deserializer.
      * Plugin should return a IDeserializer if it recognizes the content type
-     * @param IDeserializer $deserializer the deserializer. null at call in gateway.
+     * 
+	 * @param IDeserializer $deserializer the deserializer. null at call in gateway.
      * @param String $contentType
      */
     const FILTER_DESERIALIZER = "FILTER_DESERIALIZER";
     
     /**
      * filter called after the request is deserialized. The callee can modify the data and return it.
-     * @param mixed $deserializedRequest
+     * 
+	 * @param mixed $deserializedRequest
      */
     const FILTER_DESERIALIZED_REQUEST = "FILTER_DESERIALIZED_REQUEST";
 
     /**
      * filter called to allow a plugin to override the default amf deserialized request handler.
      * Plugin should return a IDeserializedRequestHandler if it recognizes the request
-     * @param IDeserializedRequestHandler $deserializedRequestHandler null at call in gateway.
+     * 
+	 * @param IDeserializedRequestHandler $deserializedRequestHandler null at call in gateway.
      * @param String $contentType
      */
     const FILTER_DESERIALIZED_REQUEST_HANDLER = "FILTER_DESERIALIZED_REQUEST_HANDLER";
 
     /**
      * filter called when the response is ready but not yet serialized.  The callee can modify the data and return it.
-     * @param $deserializedResponse
+     * 
+	 * @param $deserializedResponse
      */
     const FILTER_DESERIALIZED_RESPONSE = "FILTER_DESERIALIZED_RESPONSE";
 
@@ -48,6 +53,7 @@ class Gateway{
      * filter called to allow a plugin to override the default amf exception handler.
      * If the plugin takes over the handling of the request message,
      * it must set this to a proper IExceptionHandler
+	 * 
      * @param IExceptionHandler $exceptionHandler. null at call in gateway.
      * @param String $contentType
      */
@@ -55,6 +61,7 @@ class Gateway{
 
     /**
      * filter called to allow a plugin to override the default amf serializer.
+	 * 
      * @param ISerializer $serializer the serializer. null at call in gateway.
      * @param String $contentType
      * Plugin sets to a ISerializer if it recognizes the content type
@@ -63,13 +70,15 @@ class Gateway{
 
     /**
      * filter called when the packet response is ready and serialized.
+	 * 
      * @param String $rawData the raw http data
      */
     const FILTER_SERIALIZED_RESPONSE = "FILTER_SERIALIZED_RESPONSE";
 
     /**
      * filter called to get the headers
-     * @param array $headers an associative array of headers. For example array("Content-Type" => "application/x-amf")
+     * 
+	 * @param array $headers an associative array of headers. For example array("Content-Type" => "application/x-amf")
      * @param String $contentType
      */
     const FILTER_HEADERS = "FILTER_HEADERS";
@@ -196,7 +205,8 @@ class Gateway{
 
     /**
      * get the response headers. Creates an associative array of headers, then filters them, then returns an array of strings
-     * @return array
+     * 
+	 * @return array
      */
     public function getResponseHeaders(){        
         $filterManager = FilterManager::getInstance();
@@ -219,13 +229,6 @@ class Gateway{
         }
         echo $this->rawOutputData;
     }
-
-	/**
-	 *
-	 */
-	public function getContentType(){
-		return $this->contentType;
-	}
 
 }
 ?>

@@ -37,7 +37,7 @@ class AmfPacket {
 		$this->headers = array();
 		$this->messages = array();
 		$this->headerTable = array();
-		$this->amfVersion = AMFConstants::AMF0_ENCODING;
+		$this->amfVersion = AmfConstants::AMF0_ENCODING;
 	}
 
 	

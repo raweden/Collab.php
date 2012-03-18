@@ -28,7 +28,7 @@ class ErrorMessage
 	public $faultString;
 
         public function  __construct($correlationId) {
-            $explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+            $explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
             $this->$explicitTypeField = FlexMessaging::FLEX_TYPE_ERROR_MESSAGE;
 	    $this->correlationId = $correlationId;
         }
