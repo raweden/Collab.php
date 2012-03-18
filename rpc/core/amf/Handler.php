@@ -48,7 +48,7 @@ class AmfHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	 */
 	private $lastRequestMessageResponseUri;
 	
-	private $objectEncoding = AMFConstants::AMF0_ENCODING;
+	private $objectEncoding = AmfConstants::AMF0_ENCODING;
 	
 	public function  __construct() {
 		$this->lastRequestMessageResponseUri = "/1";
@@ -85,7 +85,7 @@ class AmfHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 	}
 	
 	/**
-	 * process a request and generate a response.
+	 * Process a request and generate a response.
 	 * throws an Exception if anything fails, so caller must encapsulate in try/catch
 	 *
 	 * @param AmfMessage $requestMessage
@@ -100,12 +100,12 @@ class AmfHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 			return $handler->handleRequestMessage($requestMessage, $serviceRouter);
 		}
 		
-		//plugins didn't do any special handling. Assumes this is a simple Amfphp_Core_Amf_ RPC call
+		//plugins didn't do any special handling. Assumes this is a simple rpc call
 		$serviceCallParameters = $this->getServiceCallParameters($requestMessage);
 		$ret = $serviceRouter->executeServiceCall($serviceCallParameters->serviceName, $serviceCallParameters->methodName, $serviceCallParameters->methodParameters);
 		$responseMessage = new AmfMessage();
 		$responseMessage->data = $ret;
-		$responseMessage->targetUri = $requestMessage->responseUri . AMFConstants::CLIENT_SUCCESS_METHOD;
+		$responseMessage->targetUri = $requestMessage->responseUri . AmfConstants::CLIENT_SUCCESS_METHOD;
 		//not specified
 		$responseMessage->responseUri = "null";
 		return $responseMessage;
@@ -156,13 +156,19 @@ class AmfHandler implements IDeserializer, IDeserializedRequestHandler, IExcepti
 		//no special handling by plugins. generate a simple error response with information about the exception
 		$errorResponseMessage = null;
 		$errorResponseMessage = new AmfMessage();
-		$errorResponseMessage->targetUri = $this->lastRequestMessageResponseUri . AMFConstants::CLIENT_FAILURE_METHOD;
+		$errorResponseMessage->targetUri = $this->lastRequestMessageResponseUri . AmfConstants::CLIENT_FAILURE_METHOD;
 		//not specified
 		$errorResponseMessage->responseUri = "null";
 		$errorResponseMessage->data = new stdClass();
 		$errorResponseMessage->data->faultCode = $exception->getCode();
 		$errorResponseMessage->data->faultString = $exception->getMessage();
-		$errorResponseMessage->data->faultDetail = $exception->getTraceAsString();
+		
+		$details = $exception->getTraceAsString();
+		// localizes the paths of the stack-trace.
+		if(defined(WEB_ROOT)){
+			$details = str_replace(WEB_ROOT, "", $details);	
+		}
+		$errorResponseMessage->data->faultDetail = $details;
 
 		$errorPacket->messages[] = $errorResponseMessage;
 		return $errorPacket;

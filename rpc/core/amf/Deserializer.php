@@ -80,7 +80,7 @@ class AmfDeserializer{
 
 		// The value value bellow will return 3 for AMF3 and null for AMF0
 		$version = ($topByte & 0xFF) << 8 | $secondByte & 0xFF;
-		$this->deserializedPacket->amfVersion = $version == 3 ? AMFConstants::AMF3_ENCODING : AMFConstants::AMF0_ENCODING;
+		$this->deserializedPacket->amfVersion = $version == 3 ? AmfConstants::AMF3_ENCODING : AmfConstants::AMF0_ENCODING;
 
 		//If firstByte != 0, then the Amf data is corrupted, for example the transmission
 		if(!($topByte == 0 || $topByte == 3)){
@@ -353,7 +353,7 @@ class AmfDeserializer{
 	/**
 	 * readCustomClass reads the amf content associated with a class instance which was registered
 	 * with Object.registerClass.  In order to preserve the class name an additional property is assigned
-	 * to the object AMFConstants::FIELD_EXPLICIT_TYPE.  This property will be overwritten if it existed within the class already.
+	 * to the object AmfConstants::FIELD_EXPLICIT_TYPE.  This property will be overwritten if it existed within the class already.
 	 *
 	 * @return object The php representation of the object
 	 */
@@ -367,7 +367,7 @@ class AmfDeserializer{
 			$obj->$key = $val; // save the name/value pair in the array
 			$key = $this->readUTF(); // get the next name
 		}
-		$explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+		$explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
 		$obj->$explicitTypeField = $typeIdentifier;
 		return $obj; // return the array
 	}
@@ -379,7 +379,7 @@ class AmfDeserializer{
 	*/
 	public function readAmf3Data(){
 		//AMF3 data found, so mark it in the deserialized packet. This is useful to know what kind of AMF to send back
-		$this->deserializedPacket->amfVersion = AMFConstants::AMF3_ENCODING;
+		$this->deserializedPacket->amfVersion = AmfConstants::AMF3_ENCODING;
 		$type = $this->readByte();
     	switch ($type){
 			case 0x00 :
@@ -632,7 +632,7 @@ class AmfDeserializer{
 			}
 		}
 		if ($type != ''){
-			$explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+			$explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
 			$obj->$explicitTypeField = $type;
 		}
 		return $obj;

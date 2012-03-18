@@ -71,7 +71,7 @@ class CustomClassConverter {
         if(!is_object($obj)){
             return $obj;
         }
-        $explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+        $explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
         if(isset($obj->$explicitTypeField)){
             $customClassName = $obj->$explicitTypeField;
             if(!class_exists($customClassName)){
@@ -114,7 +114,7 @@ class CustomClassConverter {
         if(!is_object($obj)){
             return $obj;
         }
-        $explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+        $explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
         $className = get_class ($obj);
         if($className != "stdClass" && !isset($obj->$explicitTypeField)){
             $obj->$explicitTypeField = $className;

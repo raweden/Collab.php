@@ -1,0 +1,409 @@
+html {
+    background:#f9f9f9;
+}
+body {
+    background:#fff;
+    color:#333;
+    font-family:sans-serif;
+	margin:0px;
+	overflow:hidden;
+}
+
+.panel{
+	
+	margin-top:0px;
+	height: 100%;
+	
+	border-right-color: #000000;
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
+.content{
+	width:100%;
+	height:100%;
+	overflow-y:hidden;
+	overflow-x:hidden;
+	margin:0px;
+	padding:0px;
+}
+
+
+ul li {list-style: none;} 
+
+
+.table-view{
+	overflow-x:hidden;
+	overflow-y:scroll;
+	
+}
+
+.table-cell{
+	
+	padding: 0px 6px;
+	margin: 0px;
+	
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	
+	
+	color: #F1F1F1;
+	cursor: default;
+}
+
+.table-separator{
+	
+	display: block;
+	padding: 4px 12px;
+	margin:0px;
+	height:16px;
+	
+	font-size: 11px;
+	font-weight:bold;
+	line-height: 14px;
+	text-align: left;
+	color: #ffffff;
+}
+
+.cell-title{
+	display:block;
+	font-size: 13px;
+}
+
+.cell-details{
+	display:block;
+	text-align:left;
+	color: #999999;
+	font-size: 10px;
+}
+
+.header-cell{
+	padding-top:7px;
+	padding-bottom:7px;
+	height:auto;
+	min-height: 44px;
+	
+	text-align: center;
+	color: #CCCCCC;
+}
+
+.header-text{
+	color: #CCCCCC;
+}
+
+/*
+	Message Table cells.
+*/
+
+.message-cell{
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	font-size: 13px;
+	background-color: #3b3b42;
+	color:#2D2D2D;
+	cursor:default;
+	height:auto;
+}
+
+.param-title{
+	width: auto;
+	display: block;
+	padding: 6px 0px 2px;
+	color: #CCCCCC;
+}
+
+.param-details{
+	text-align:left;
+	color: #999999;
+	display:block;	
+}
+
+.param-input{
+	background-color: rgba(0,0,0,0.1);
+	box-shadow: inset 0px 2px 4px rgba(0,0,0,0.5);
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 6px;
+	
+	padding: 3px 6px;
+	margin: 6px 0px;
+	width:100%;	
+	overflow-y:hidden;
+	outline: none;
+	resize: none;
+		
+	font-family: monospace;
+	font-size:14px;
+	color: #F1F1F1;	
+}
+
+/* Command List View*/
+
+#commands{
+	background-image: url('img/lines.jpg');
+	
+	width:320px;
+	padding:0px;
+}
+
+#commands li{
+	background: none;
+	border-bottom: 1px solid #1D1E21 !important;
+	border-top: 1px solid #4A4A54;
+	padding: 6px 12px;
+	height: 54px;
+	
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	font-size: 13px;
+	text-shadow: 0px 1px 1px black;
+	color: white;
+	cursor: default;
+}
+
+/* Message Input View */
+
+#argumentPanel{
+	background-image: url('img/lines.jpg');
+	box-shadow: inset 3px 5px 40px rgba(0, 0, 0, 0.10), inset 1px 0px 0px rgba(255, 2555, 255, 0.10), 0 0 10px rgba(0, 0, 0, 0.64);
+}
+
+#argumentPanel ul{
+	width:320px;
+	padding:0px;
+	
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+
+#argumentPanel ul li{
+	border-bottom: 1px solid #1D1E21 !important;
+	border-top: 1px solid #4A4A54;
+	left: 0px;
+	right: 0;
+	height: auto;
+	color: white;
+	text-shadow: 0px 1px 1px black;
+	position: relative;
+	cursor: default;
+	background: none;
+}
+
+#argumentPanel ul li p{
+	
+}
+
+#argumentPanel ul li table{
+	margin: 6px;
+	height: auto;
+	text-shadow: none;
+	font-size:11px;
+	color: white;
+}
+
+#argumentPanel ul li table tr th{
+	color: gray;
+}
+
+#argumentPanel ul li table tr td{
+	color: #CCCCCC;
+}
+
+/* Toolbar */
+
+#toolbar{
+	background-image: url('img/lines.jpg');
+	box-shadow: inset 0px 1px 0px rgba(255, 2555, 255, 0.10), 0px -3px 5px rgba(0, 0, 0, 0.25);
+	padding: 12px 6px 6px;
+	margin:0px;
+	position: absolute;
+	bottom: 0px;
+	height:32;
+}
+
+.tool-button{
+	
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	border-radius: 10px;
+
+	background-color: rgba(255, 255, 255, 0.1);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25), inset 0px 4px 8px rgba(255, 255, 255, 0.15), inset 0px 0px 1px rgba(0, 0, 0, 0.35);
+
+	margin: 0px 0px 10px 0px;
+	padding: 6px 12px;
+	
+	color: #FFFFFF;
+	font-size: 14px;
+	text-align: center;
+	text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+	cursor: default;
+}
+
+
+/* Collab Result View */
+
+#resultView{
+	background-image: url('img/lines.jpg');
+	box-shadow: inset 3px 5px 40px rgba(0, 0, 0, 0.10), inset 1px 0px 0px rgba(255, 2555, 255, 0.10), 0 0 10px rgba(0, 0, 0, 0.64);
+	/* background-color: #3b3b42; */
+	
+	color: #CCCCCC;
+	font-family: monospace;
+	font-size: 13px;
+	line-height: 14px;
+	text-align: left;
+	margin:0px;
+	width: 640px;
+	
+	overflow-x:scroll;
+	overflow-y:scroll;
+	
+	display: block;
+}
+
+/* Collab Result Messages */
+
+#collab-result{
+	padding:5px 12px;
+}
+
+#collab-result li{
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	border-radius: 10px;
+	
+	background-color: rgba(255, 255, 255, 0.02);
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+	
+	margin: 0px 0px 10px 0px;
+	padding: 6px 12px;
+	min-height:16px;
+	
+	color: #FFFFFF;
+	font-size: 14px;
+	word-wrap: break-word;
+}
+
+#collab-result li p{
+	text-align:center;
+	margin: 0px 4px;
+}
+
+#collab-result li pre code{
+	
+}
+
+/* Message Special 
+
+.message-expand{
+	cursor: default;
+}
+
+.message-copy{
+	cursor: default;
+}
+*/
+
+/*
+	Modal View
+*/
+#overlay {
+	background-color: rgba(45,45,45,0.45);
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width:100%;
+	height:100%;
+	text-align:center;
+	z-index: 20;
+}
+
+#overlay section {
+	background-image: url('img/lines.jpg');
+	box-shadow: inset 3px 5px 40px rgba(0, 0, 0, 0.10), inset 0px 1px 0px rgba(255, 255, 255, 0.10), inset 0px -1px 0px rgba(0, 0, 0, 0.05), 0 5px 20px rgba(0, 0, 0, 0.46);
+	border-radius:12px;
+
+	margin: 100px auto;
+	padding:6px;
+	width:480px;
+	height:320px;
+	text-align:center;
+	color:#FFF;
+}
+
+#overlay-close{
+	background-image:url('img/close-box.png');
+	float:right;
+	width:30px;
+	height:30px;
+	position:relative;
+	top: -20px;
+	left: -20px;
+	float:left;
+	z-index: 21;
+}
+
+.tool-ql{
+	background-image:url('img/preview.png');
+	float:right;
+	width: 21px;
+	height: 14px;
+}
+
+/*
+	Various Fixes.
+*/
+
+#send{
+	background-image: url(img/btn.png);
+	background-repeat: repeat-x;
+	margin:0px;
+	padding:0px;
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	width:auto;
+	height:39px;
+}
+
+
+.send-icon{
+	color:#F1F1F1;
+	width: auto;
+	height: auto;
+	background-image:none;
+}
+
+.headers-icon{
+	background-position: -260px -360px !important;
+	height: 20px;
+	width: 20px;
+	margin: -2px auto 0 auto;
+}
+
+.tool-icon{
+	/*background-image: url('/images/wunderkit.png');*/
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+}
+
+
+ul, menu, dir {
+display: block;
+list-style-type: disc;
+-webkit-margin-before: 0px;
+-webkit-margin-after: 0px;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 40px;
+}
+
+.label-fix{
+	padding-top: 7px;
+}
+
+
+/* 
+	border-top: 1px solid transparent; :first-child 
+
+*/

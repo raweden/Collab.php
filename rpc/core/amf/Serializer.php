@@ -381,9 +381,9 @@ class AmfSerializer {
 	/**
 	 * writeTypedObject takes an instance of a class and writes the variables defined
 	 * in it to the output stream.
-	 * To accomplish this we just blanket grab all of the object vars with get_object_vars, minus the AMFConstants::FIELD_EXPLICIT_TYPE field, whiuch is used as class name
+	 * To accomplish this we just blanket grab all of the object vars with get_object_vars, minus the AmfConstants::FIELD_EXPLICIT_TYPE field, whiuch is used as class name
 	 *
-	 * @param {object} $d The object to serialize the properties. The deserializer looks for AMFConstants::FIELD_EXPLICIT_TYPE on this object and writes it as the class name.
+	 * @param {object} $d The object to serialize the properties. The deserializer looks for AmfConstants::FIELD_EXPLICIT_TYPE on this object and writes it as the class name.
 	 */
 	protected function writeTypedObject($d) {
 		if ($this->handleReference($d, $this->Amf0StoredObjects)) {
@@ -391,10 +391,10 @@ class AmfSerializer {
 		}
 		$this->writeByte(16); // write  the custom class code
 
-		$explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+		$explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
 		$className = $d->$explicitTypeField;
 		if (!$className) {
-			throw new RemotingException(AMFConstants::FIELD_EXPLICIT_TYPE . " not found on a object that is to be sent as typed. " . print_r($d, true));
+			throw new RemotingException(AmfConstants::FIELD_EXPLICIT_TYPE . " not found on a object that is to be sent as typed. " . print_r($d, true));
 		}
 		unset($d->$explicitTypeField);
 		$this->writeUTF($className); // write the class name
@@ -416,7 +416,7 @@ class AmfSerializer {
 	 * @param {mixed} $d The data
 	 */
 	protected function writeData($d) {
-		if ($this->packet->amfVersion == AMFConstants::AMF3_ENCODING) { //amf3 data. This is most often, so it's has been moved to the top to be first
+		if ($this->packet->amfVersion == AmfConstants::AMF3_ENCODING) { //amf3 data. This is most often, so it's has been moved to the top to be first
 			$this->writeByte(0x11);
 			$this->writeAmf3Data($d);
 			return;
@@ -445,7 +445,7 @@ class AmfSerializer {
 			$this->writeXML($d);
 			return;
 		} elseif (is_object($d)) {
-			$explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+			$explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
 			$hasExplicitType = isset($d->$explicitTypeField);
 			$className = get_class($d);
 			if ($hasExplicitType) {
@@ -780,7 +780,7 @@ class AmfSerializer {
 		
 		if($key !== false){
 			//reference exists. write it and return true
-			if($this->packet->amfVersion == AMFConstants::AMF0_ENCODING){
+			if($this->packet->amfVersion == AmfConstants::AMF0_ENCODING){
 				$this->writeReference($key);
 			}else{
 				$handle = $key << 1;
@@ -803,7 +803,7 @@ class AmfSerializer {
 			return;
 		}
 	   
-		$explicitTypeField = AMFConstants::FIELD_EXPLICIT_TYPE;
+		$explicitTypeField = AmfConstants::FIELD_EXPLICIT_TYPE;
 
 		if(isset ($d->$explicitTypeField)){
 			//class name is set. send all properties as sealed members.

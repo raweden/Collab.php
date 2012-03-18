@@ -1,57 +1,57 @@
-#Collab (php)
-The Collab (php) is a simple remoteing library written in php, collar are similar to it's node equal but are simplified and don't support alive connection between the server and client. Collab is based on [amfphp 2.0](https://github.com/silexlabs/amfphp-2.0).
 
-### Supported Platforms
+![Collab (php)](http://raweden.se/public/github/collab-php-logo.png)
+
+The Collab (php) is a simple and rubust remoting platform, written on top a modified version of [amfphp 2.0](https://github.com/silexlabs/amfphp-2.0)
+
+
+### Supported (Client) Platforms
 * ActionScript 3.0 using the `NetConnection` class, this also includes flex.
-* AJAX and JavaScript using the `XMLHttpRequest`
-* XML-RPC (supported in a wide range of languages).
-
-**amfphp 2.0** is free and open source software, and an essential brick for the development of Web Applications. amfphp is used in projects that cover a wide spectrum, from games to business applications. The role of amfphp is to make connecting an application running in the browser with a server in the cloud as simple as possible. Applications no longer run only on desktops, but must also be available on a variety of smartphones and tablets. It is becoming increasingly complex to code with the diversity of technologies used in these terminals. amfphp is the best solution for creating accessible services to all terminals. Developers can focus on features unique to their projects, regardless of the communication between client and server.
-How does it work?  
-amfphp works as an entry point for your client. Your client sends a request to a PHP script on your server where amfphp is loaded. It parses the request, loads the requested service, calls it, and returns the answer accordingly. amfphp is maintained by Silex Labs and this is a fork by **raweden** to develop a uniform bundle to support **rpc** requests from a wide range of languages and platform.
+* AJAX and JavaScript using the `XMLHttpRequest`, a wrapper included in [download section](https://github.com/raweden/Collab.php).
 
 
-### Issues to solve
+### Bundled with perfect Utility Tool
+**If your are addicted to eyecandy you will love this one.** Inspired by the Graph API explorer (facebook) i developed this little utility tool, it's written in JavaScript and utilizes the Json Gateway in amfphp.
+
+![Tool Preview](http://raweden.se/public/github/tool.png)
+
+### TODO
+* Solve the issue with binary sending binary data in Json (plugin). In Amf we have the `ByteArray` type which is recognized as binary data in both ends, however there is no binary data-type in Json. The problem could be solved in diffrent manners, one approach could be to have a overrideMimeType() interface in the Json plugin, to allow commands to prevent the default serialization of the data and instead return the call as it's default mime-type, for example `image/png`. Another approach could be to  loop through the return object tree, to find and serialize the `ByteArray` object in a custom way, lets say with `base64`.
+
+
+* Solve exception handling in Json (plugin). The default implemented way to handle exception where just poor, in the beta branch there are serialized into object (feels more useful). However there is no good way to determine whether the retrived data is a `result` or `fault`, where fault is when a exception is thrown by the command. Alternative solution is to wrap the resulting data object into another and provide additional meta-data about the call: `{"data":{..},"isFault":false}`.
+	
+
+* Solve issue cross-platform serializing data types. As mentioned in a issue above there is huge a problem sending binary data in Json, and a better interface is needed to determine at method level which type that is most useful to return. For instance, it's better to return a `ByteArray` for representing binary data than a string when handling a Amf request. However when the same command handles a json request, the `ByteArray` type is quite useless and will contain alot of escaped characters that won't be recognized and resolved at client-side.
+
+* Provide utilities that exposes the type of request `Content-Type`.
+
+* Refactor `GatewayConfig`, `PluginManager`to be controlled form a configuration file, to allow remote enable and disable plugins etc.
+
 * Provide a implementation that makes services aware of the format that the data will be serialized in, services that return a `ByteArray` to flash may better return their values as string when serialized into JSON.
-* Provide a configuration file for plugins and the runtime setup itself.
-* Token based authorization.
-* Add **XML-RPC** plugin to support another wide range of client-side 
 
-### Goals for this fork!
-languages.
-* Remove the naming convention used by the **silexlabs**, in favor of classname without the `Amfphp` and `package` prefixes.
-* Posible add support for sub-directories both in the `Plugins` and `Service` folder, or support for multible plugin folders.
-* Cleaned up the default Service browser, [click here to preview](http://raweden.se/public/wiki/ServiceBrowser.png). (Done but not synced yet).
+* Remove Native scrollers in the Tool and replace them with a overlay scroller, however this should only be done with desktop clients.
 
-### Related Links
+* Fix issues with the Tool running in mobile browser, performance is bad.
 
-[Documentation](http://silexlabs.org/amfphp/documentation/)  
-[Forums](http://sourceforge.net/projects/amfphp/forums)  
-[Source Code](https://github.com/silexlabs/amfphp-2.0)  
-[Package Reference](http://community.silexlabs.org/amfphp/reference/)  
-[Silex Labs](http://www.silexlabs.org/)
 
-**Disclaimer** most of above documentation is written by [silexlabs](http://silexlabs.org/amfphp/) with a touch of **raweden**.
+### Done 
+* Refactoring the naming convention used by the **silexlabs**, in favor of classnames without the `Amfphp_Package` prefix.
+* Fixed issue with Amf3.
+* Developed a better service browser and removed the default service browser.
 
-### License
-**Copyright (c) 2009-2011, Silex Labs**
-All rights reserved.  
-[New BSD license](See http://en.wikipedia.org/wiki/Bsd_license)
+*  *  *
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met: 
- 
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.  
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.  
-* Neither the name of Silex Labs nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+Copyright © 2011 [Raweden](http://raweden.se)
 
-**THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL SILEX LABS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.**
+### Term of Use
+**You are free:** to copy, distribute, display, and perform the work
+to make derivative works
+to make commercial use of the work
+**Under the following conditions:**
+
+* **Attribution** — You must give the original author credit.
+* **Share Alike** — If you alter, transform, or build upon this work, you may distribute the resulting work only under a licence identical to this one.
+
+![CC Licence](http://raweden.se/public/github/by.png)  ![CC Licence](http://raweden.se/public/github/sa.png)
+
+
