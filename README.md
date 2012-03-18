@@ -10,9 +10,7 @@ The Collab (php) is a simple and rubust remoting platform, written on top a modi
 
 
 ### Bundled with perfect Utility Tool
-**If your are addicted to eyecandy you will love this one.** Inspired by the Graph API explorer (facebook) i developed this little utility tool, it's written in JavaScript and utilizes the Json Gateway in amfphp.
-
-![Tool Preview](http://raweden.se/public/github/tool.png)
+**If your are addicted to eyecandy you will love this one.** Inspired by the Graph API explorer (facebook) i developed this little utility, it's written in JavaScript and utilizes the Json Gateway in amfphp.
 
 ### TODO
 * Solve the issue with binary sending binary data in Json (plugin). In Amf we have the `ByteArray` type which is recognized as binary data in both ends, however there is no binary data-type in Json. The problem could be solved in diffrent manners, one approach could be to have a overrideMimeType() interface in the Json plugin, to allow commands to prevent the default serialization of the data and instead return the call as it's default mime-type, for example `image/png`. Another approach could be to  loop through the return object tree, to find and serialize the `ByteArray` object in a custom way, lets say with `base64`.
